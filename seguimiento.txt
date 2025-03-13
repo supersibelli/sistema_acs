@@ -1,0 +1,149 @@
+=== SEGUIMIENTO DEL PROYECTO SISTEMA ACS ===
+
+FECHA: 11/03/2024
+
+=== FASE 1: CONFIGURACIÓN INICIAL (COMPLETADO) ===
+
+1. Estructura del Proyecto Implementada:
+app/
+├── __init__.py           # Configuración Flask
+├── models/
+│   ├── __init__.py
+│   └── user.py          # Modelo de usuario
+├── routes/
+│   ├── __init__.py
+│   ├── auth.py          # Rutas de autenticación
+│   └── main.py          # Ruta principal
+├── templates/
+│   ├── auth/
+│   │   └── login.html   # Página de login
+│   ├── base.html        # Template base
+│   └── index.html       # Página principal
+└── static/
+    ├── css/
+    │   └── style.css    # Estilos CSS
+    └── img/             # Carpeta para imágenes
+
+2. Funcionalidades Implementadas:
+- Sistema de autenticación completo
+- Página de inicio con diseño responsivo
+- Menú principal con 3 tipos de formularios
+- Estilos personalizados y logo temporal
+- Bootstrap 5 y Font Awesome integrados
+
+3. Archivos Principales Creados:
+
+base.html:
+- Navbar con logo "Sistema ACS"
+- Menú de navegación
+- Sistema de mensajes flash
+- Carga de CSS y JS
+
+index.html:
+- Dashboard principal
+- Cards para los 3 tipos de formularios:
+  * Cadastro Individual
+  * Cadastro Domiciliar
+  * Visita Domiciliar
+- Sección de consultas y reportes
+
+style.css:
+- Estilos para el logo temporal
+- Configuración de colores principales
+- Estilos de cards y botones
+
+=== FASE 2: CADASTRO INDIVIDUAL (EN PROGRESO) ===
+
+PRÓXIMOS PASOS:
+
+1. Crear Modelo de Datos:
+- Identificação do Cidadão
+- Informações Sociodemográficas
+- Condições/Situações de Saúde
+- Situação de Rua (se aplicável)
+
+2. Implementar Formularios:
+- Dividir en secciones manejables
+- Usar WTForms para validación
+- Mantener consistencia visual
+
+3. Crear Templates:
+- Seguir diseño de base.html
+- Usar componentes Bootstrap 5
+- Mantener responsividad
+- Implementar navegación entre secciones
+
+4. Desarrollar Rutas:
+- Crear nuevo blueprint 'cadastro'
+- Implementar CRUD completo
+- Manejar validaciones
+- Gestionar archivos adjuntos
+
+5. Validaciones y Feedback:
+- Validación en cliente y servidor
+- Mensajes de error claros
+- Confirmaciones de acciones
+- Guardado automático
+
+ESTÁNDARES A SEGUIR:
+
+1. Visual:
+- Mantener paleta de colores actual
+- Usar cards para agrupar información
+- Botones consistentes
+- Iconografía de Font Awesome
+
+2. Funcional:
+- Validación en tiempo real
+- Navegación intuitiva
+- Mensajes claros
+- Acciones reversibles
+
+3. Técnico:
+- Seguir patrón MVC
+- Documentar código
+- Manejar errores
+- Optimizar consultas DB
+
+=== NOTAS IMPORTANTES ===
+
+- El sistema usa SQLite en desarrollo
+- Autenticación mediante Flask-Login
+- Bootstrap 5 para componentes UI
+- Font Awesome para iconos
+- Sistema de mensajes flash implementado
+
+=== SIGUIENTE ACTUALIZACIÓN ===
+- Implementación del modelo de datos para Cadastro Individual
+- Creación de los primeros formularios
+- Diseño de la interfaz de usuario
+
+=== ACTUALIZACIONES 12/04/2024 ===
+
+✅ Completado:
+- Primera etapa del formulario Cadastro Individual:
+  - Sección "Identificação do Cidadão" implementada con:
+    - Campos básicos de identificación
+    - Validación de fechas en formato DD/MM/AAAA
+    - Manejo de padres desconocidos con validaciones
+    - Campos condicionales según nacionalidad
+    - Validaciones en cliente y servidor
+    - Mensajes de error en portugués
+    - Limpieza automática de campos no aplicables
+
+Cambios y Correcciones:
+  - Cambio del título de sección de "Identificação do Usuário/Cidadão" a "Identificação do Cidadão"
+  - Corrección de validaciones para campos de padres desconocidos
+  - Mejora en el manejo de errores y mensajes en portugués
+
+📝 Próximo Paso:
+---------------
+Implementar la sección "Informações Sociodemográficas" que incluye:
+1. Relação de Parentesco com o Responsável Familiar
+2. Frequenta Escola ou Creche
+3. Situação no Mercado de Trabalho
+4. Crianças de 0 a 9 anos, com quem fica
+5. Frequenta Cuidador Tradicional
+6. Participa de Algum Grupo Comunitário
+7. Possui Plano de Saúde Privado
+8. Membro de Povo ou Comunidade Tradicional

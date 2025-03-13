@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Bem-vindo ao Sistema ACS</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="logo-container">
+                            <span class="logo-text">ACS</span>
+                            <span class="logo-subtext">Sistema de Atenção Primária à Saúde</span>
+                        </div>
+                    </div>
+                    <h5 class="text-center mb-4">Sistema ACS APS</h5>
+                    
+                    <div class="row">
+                        <!-- Ficha de Cadastro Individual -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-user-plus text-primary"></i>
+                                        Cadastro Individual
+                                    </h5>
+                                    <p class="card-text">
+                                        Gerenciar cadastros individuais dos cidadãos.
+                                    </p>
+                                    <a href="{{ url_for('cadastro.novo_cadastro') }}" class="btn btn-primary">
+                                        <i class="fas fa-user-plus"></i> Novo Cadastro
+                                    </a>
+                                    <a href="{{ url_for('cadastro.lista_cadastros') }}" class="btn btn-secondary">
+                                        <i class="fas fa-list"></i> Lista
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ficha de Cadastro Domiciliar -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-home text-primary"></i>
+                                        Cadastro Domiciliar
+                                    </h5>
+                                    <p class="card-text">
+                                        Registre dados sobre as condições das moradias e do ambiente familiar.
+                                    </p>
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fas fa-plus-circle"></i> Novo Cadastro
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ficha de Visita Domiciliar -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-clipboard-list text-primary"></i>
+                                        Visita Domiciliar
+                                    </h5>
+                                    <p class="card-text">
+                                        Registre as visitas realizadas aos domicílios e áreas designadas.
+                                    </p>
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fas fa-plus-circle"></i> Nova Visita
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Consulta -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-search text-primary"></i>
+                                        Consultar Cadastros
+                                    </h5>
+                                    <p class="card-text">Pesquise e visualize todos os cadastros realizados.</p>
+                                    <a href="#" class="btn btn-outline-primary">
+                                        <i class="fas fa-list"></i> Ver Cadastros
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-chart-bar text-primary"></i>
+                                        Relatórios
+                                    </h5>
+                                    <p class="card-text">Gere relatórios e estatísticas dos atendimentos.</p>
+                                    <a href="#" class="btn btn-outline-primary">
+                                        <i class="fas fa-file-alt"></i> Ver Relatórios
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

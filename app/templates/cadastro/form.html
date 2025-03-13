@@ -1,0 +1,375 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2>Cadastro Individual</h2>
+        </div>
+        <div class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" class="needs-validation" novalidate>
+                {{ form.csrf_token }}
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Identificação do Cidadão</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.nome_completo.label(class="form-label") }}
+                                {{ form.nome_completo(class="form-control" + (" is-invalid" if form.nome_completo.errors else "")) }}
+                                {% if form.nome_completo.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.nome_completo.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.nome_social.label(class="form-label") }}
+                                {{ form.nome_social(class="form-control") }}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.data_nascimento.label(class="form-label") }}
+                                {{ form.data_nascimento(class="form-control" + (" is-invalid" if form.data_nascimento.errors else ""),
+                                                       placeholder="DD/MM/AAAA",
+                                                       maxlength="10") }}
+                                <small class="form-text text-muted">Formato: DD/MM/AAAA</small>
+                                {% if form.data_nascimento.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.data_nascimento.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.sexo.label(class="form-label") }}
+                                {{ form.sexo(class="form-control" + (" is-invalid" if form.sexo.errors else "")) }}
+                                {% if form.sexo.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.sexo.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.raca_cor.label(class="form-label") }}
+                                {{ form.raca_cor(class="form-control" + (" is-invalid" if form.raca_cor.errors else "")) }}
+                                {% if form.raca_cor.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.raca_cor.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3" id="etnia-container" style="display: none;">
+                                {{ form.etnia.label(class="form-label") }}
+                                {{ form.etnia(class="form-control" + (" is-invalid" if form.etnia.errors else "")) }}
+                                {% if form.etnia.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.etnia.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.numero_nis.label(class="form-label") }}
+                                {{ form.numero_nis(class="form-control" + (" is-invalid" if form.numero_nis.errors else "")) }}
+                                {% if form.numero_nis.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.numero_nis.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    {{ form.nome_mae.label(class="form-label") }}
+                                    <div class="form-check">
+                                        {{ form.mae_desconhecida(class="form-check-input") }}
+                                        {{ form.mae_desconhecida.label(class="form-check-label") }}
+                                    </div>
+                                </div>
+                                {{ form.nome_mae(class="form-control" + (" is-invalid" if form.nome_mae.errors else "")) }}
+                                {% if form.nome_mae.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.nome_mae.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    {{ form.nome_pai.label(class="form-label") }}
+                                    <div class="form-check">
+                                        {{ form.pai_desconhecido(class="form-check-input") }}
+                                        {{ form.pai_desconhecido.label(class="form-check-label") }}
+                                    </div>
+                                </div>
+                                {{ form.nome_pai(class="form-control" + (" is-invalid" if form.nome_pai.errors else "")) }}
+                                {% if form.nome_pai.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.nome_pai.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.nacionalidade.label(class="form-label") }}
+                                {{ form.nacionalidade(class="form-control") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.pais_nascimento.label(class="form-label") }}
+                                {{ form.pais_nascimento(class="form-control") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.data_naturalizacao.label(class="form-label") }}
+                                {{ form.data_naturalizacao(class="form-control" + (" is-invalid" if form.data_naturalizacao.errors else ""),
+                                                       placeholder="DD/MM/AAAA",
+                                                       maxlength="10") }}
+                                <small class="form-text text-muted">Formato: DD/MM/AAAA</small>
+                                {% if form.data_naturalizacao.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.data_naturalizacao.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.portaria_naturalizacao.label(class="form-label") }}
+                                {{ form.portaria_naturalizacao(class="form-control") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.municipio_nascimento.label(class="form-label") }}
+                                {{ form.municipio_nascimento(class="form-control") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.uf_nascimento.label(class="form-label") }}
+                                {{ form.uf_nascimento(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.data_entrada_brasil.label(class="form-label") }}
+                                {{ form.data_entrada_brasil(class="form-control" + (" is-invalid" if form.data_entrada_brasil.errors else ""),
+                                                       placeholder="DD/MM/AAAA",
+                                                       maxlength="10") }}
+                                <small class="form-text text-muted">Formato: DD/MM/AAAA</small>
+                                {% if form.data_entrada_brasil.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.data_entrada_brasil.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.telefone_celular.label(class="form-label") }}
+                                {{ form.telefone_celular(class="form-control") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-end">
+                    <a href="{{ url_for('cadastro.lista_cadastros') }}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Salvar Cadastro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Manejo de etnia para indígenas
+    const racaCorSelect = document.getElementById('raca_cor');
+    const etniaContainer = document.getElementById('etnia-container');
+    
+    racaCorSelect.addEventListener('change', function() {
+        etniaContainer.style.display = this.value === 'indigena' ? 'block' : 'none';
+    });
+
+    // Manejo de campos desconhecidos
+    const maeDesconhecida = document.getElementById('mae_desconhecida');
+    const nomeMae = document.getElementById('nome_mae');
+    const paiDesconhecido = document.getElementById('pai_desconhecido');
+    const nomePai = document.getElementById('nome_pai');
+
+    maeDesconhecida.addEventListener('change', function() {
+        nomeMae.disabled = this.checked;
+        if (this.checked) {
+            nomeMae.value = 'Desconhecido';
+        } else {
+            nomeMae.value = '';
+        }
+    });
+
+    paiDesconhecido.addEventListener('change', function() {
+        nomePai.disabled = this.checked;
+        if (this.checked) {
+            nomePai.value = 'Desconhecido';
+        } else {
+            nomePai.value = '';
+        }
+    });
+
+    // Formateo de fechas
+    function formatDate(input) {
+        let value = input.value.replace(/\D/g, '');
+        
+        if (value.length > 0) {
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2);
+            }
+            if (value.length > 5) {
+                value = value.substring(0, 5) + '/' + value.substring(5);
+            }
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+        }
+        
+        input.value = value;
+    }
+
+    const dateFields = ['data_nascimento', 'data_naturalizacao', 'data_entrada_brasil'];
+    
+    dateFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('input', function(e) {
+                formatDate(this);
+            });
+            
+            field.addEventListener('paste', function(e) {
+                e.preventDefault();
+                let text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                text = text.replace(/\D/g, '');
+                setTimeout(() => {
+                    this.value = text;
+                    formatDate(this);
+                }, 0);
+            });
+        }
+    });
+
+    // Manejo de campos según nacionalidad
+    const nacionalidadeSelect = document.getElementById('nacionalidade');
+    const paisNascimentoGroup = document.getElementById('pais_nascimento').closest('.col-md-4');
+    const dataNaturalizacaoGroup = document.getElementById('data_naturalizacao').closest('.col-md-4');
+    const portariaNaturalizacaoGroup = document.getElementById('portaria_naturalizacao').closest('.col-md-4');
+    const municipioNascimentoGroup = document.getElementById('municipio_nascimento').closest('.col-md-4');
+    const ufNascimentoGroup = document.getElementById('uf_nascimento').closest('.col-md-4');
+    const dataEntradaBrasilGroup = document.getElementById('data_entrada_brasil').closest('.col-md-4');
+
+    function updateFieldsVisibility() {
+        const nacionalidade = nacionalidadeSelect.value;
+
+        // Campos para brasileiros
+        municipioNascimentoGroup.style.display = nacionalidade === 'brasileira' ? 'block' : 'none';
+        ufNascimentoGroup.style.display = nacionalidade === 'brasileira' ? 'block' : 'none';
+
+        // Campos para naturalizados y extranjeros
+        paisNascimentoGroup.style.display = nacionalidade === 'naturalizado' || nacionalidade === 'estrangeiro' ? 'block' : 'none';
+        
+        // Campos específicos para naturalizados
+        dataNaturalizacaoGroup.style.display = nacionalidade === 'naturalizado' ? 'block' : 'none';
+        portariaNaturalizacaoGroup.style.display = nacionalidade === 'naturalizado' ? 'block' : 'none';
+
+        // Campos específicos para extranjeros
+        dataEntradaBrasilGroup.style.display = nacionalidade === 'estrangeiro' ? 'block' : 'none';
+
+        // Limpiar campos ocultos
+        if (nacionalidade === 'brasileira') {
+            document.getElementById('pais_nascimento').value = '';
+            document.getElementById('data_naturalizacao').value = '';
+            document.getElementById('portaria_naturalizacao').value = '';
+            document.getElementById('data_entrada_brasil').value = '';
+        } else if (nacionalidade === 'naturalizado') {
+            document.getElementById('data_entrada_brasil').value = '';
+        } else if (nacionalidade === 'estrangeiro') {
+            document.getElementById('data_naturalizacao').value = '';
+            document.getElementById('portaria_naturalizacao').value = '';
+        }
+    }
+
+    nacionalidadeSelect.addEventListener('change', updateFieldsVisibility);
+    
+    // Ejecutar al cargar la página para establecer el estado inicial
+    updateFieldsVisibility();
+
+    // Agregar al script existente
+    function validateForm() {
+        const maeDesconhecida = document.getElementById('mae_desconhecida');
+        const nomeMae = document.getElementById('nome_mae');
+        const paiDesconhecido = document.getElementById('pai_desconhecido');
+        const nomePai = document.getElementById('nome_pai');
+        let isValid = true;
+
+        // Validar nome da mãe
+        if (!maeDesconhecida.checked && !nomeMae.value.trim()) {
+            nomeMae.classList.add('is-invalid');
+            if (!nomeMae.nextElementSibling) {
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback';
+                feedback.textContent = 'Nome da mãe é obrigatório quando não for desconhecido';
+                nomeMae.parentNode.appendChild(feedback);
+            }
+            isValid = false;
+        }
+
+        // Validar nome do pai
+        if (!paiDesconhecido.checked && !nomePai.value.trim()) {
+            nomePai.classList.add('is-invalid');
+            if (!nomePai.nextElementSibling) {
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback';
+                feedback.textContent = 'Nome do pai é obrigatório quando não for desconhecido';
+                nomePai.parentNode.appendChild(feedback);
+            }
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Modificar el formulario para usar la validación
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        if (!validateForm()) {
+            e.preventDefault();
+        }
+    });
+
+    // Limpiar validación cuando se marca como desconocido (padre)
+    paiDesconhecido.addEventListener('change', function() {
+        if (this.checked) {
+            nomePai.classList.remove('is-invalid');
+            const feedback = nomePai.nextElementSibling;
+            if (feedback && feedback.className === 'invalid-feedback') {
+                feedback.remove();
+            }
+        }
+    });
+});
+</script>
+{% endblock %} 
