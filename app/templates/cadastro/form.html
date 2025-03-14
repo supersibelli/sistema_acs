@@ -268,6 +268,177 @@
                     </div>
                 </div>
 
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Informações Sociodemográficas</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Relação de Parentesco -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.parentesco_responsavel.label(class="form-label") }}
+                                {{ form.parentesco_responsavel(class="form-control" + (" is-invalid" if form.parentesco_responsavel.errors else "")) }}
+                                {% if form.parentesco_responsavel.errors %}
+                                    <div class="invalid-feedback">{{ form.parentesco_responsavel.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mt-4">
+                                    {{ form.frequenta_escola(class="form-check-input") }}
+                                    {{ form.frequenta_escola.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Situação no Mercado de Trabalho -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                {{ form.situacao_trabalho.label(class="form-label") }}
+                                {{ form.situacao_trabalho(class="form-control" + (" is-invalid" if form.situacao_trabalho.errors else "")) }}
+                                {% if form.situacao_trabalho.errors %}
+                                    <div class="invalid-feedback">{{ form.situacao_trabalho.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Crianças 0-9 anos -->
+                        <div class="row mb-3" id="crianca-container">
+                            <div class="col-md-6">
+                                {{ form.crianca_ficacom.label(class="form-label") }}
+                                {{ form.crianca_ficacom(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <!-- Campos Sim/Não -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.frequenta_cuidador(class="form-check-input") }}
+                                    {{ form.frequenta_cuidador.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.participa_grupo(class="form-check-input") }}
+                                    {{ form.participa_grupo.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.possui_plano_saude(class="form-check-input") }}
+                                    {{ form.possui_plano_saude.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comunidade Tradicional -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.membro_comunidade(class="form-check-input") }}
+                                    {{ form.membro_comunidade.label(class="form-check-label") }}
+                                </div>
+                                <div id="qual-comunidade-container" style="display: none;">
+                                    {{ form.qual_comunidade.label(class="form-label") }}
+                                    {{ form.qual_comunidade(class="form-control" + (" is-invalid" if form.qual_comunidade.errors else "")) }}
+                                    {% if form.qual_comunidade.errors %}
+                                        <div class="invalid-feedback">{{ form.qual_comunidade.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orientação Sexual -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.informa_orientacao(class="form-check-input") }}
+                                    {{ form.informa_orientacao.label(class="form-check-label") }}
+                                </div>
+                                <div id="orientacao-container" style="display: none;">
+                                    {{ form.orientacao_sexual.label(class="form-label") }}
+                                    {{ form.orientacao_sexual(class="form-control" + (" is-invalid" if form.orientacao_sexual.errors else "")) }}
+                                    {% if form.orientacao_sexual.errors %}
+                                        <div class="invalid-feedback">{{ form.orientacao_sexual.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Identidade de Gênero -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.informa_identidade(class="form-check-input") }}
+                                    {{ form.informa_identidade.label(class="form-check-label") }}
+                                </div>
+                                <div id="identidade-container" style="display: none;">
+                                    {{ form.identidade_genero.label(class="form-label") }}
+                                    {{ form.identidade_genero(class="form-control" + (" is-invalid" if form.identidade_genero.errors else "")) }}
+                                    {% if form.identidade_genero.errors %}
+                                        <div class="invalid-feedback">{{ form.identidade_genero.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Deficiência -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.tem_deficiencia(class="form-check-input") }}
+                                    {{ form.tem_deficiencia.label(class="form-check-label") }}
+                                </div>
+                                <div id="deficiencias-container" style="display: none;">
+                                    {{ form.deficiencias.label(class="form-label") }}
+                                    {{ form.deficiencias(class="form-select" + (" is-invalid" if form.deficiencias.errors else ""), multiple=True) }}
+                                    {% if form.deficiencias.errors %}
+                                        <div class="invalid-feedback">{{ form.deficiencias.errors[0] }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">Pressione Ctrl para selecionar múltiplas opções</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Saída do Cadastro -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                {{ form.motivo_saida.label(class="form-label") }}
+                                {{ form.motivo_saida(class="form-control") }}
+                            </div>
+                            <div class="col-md-4" id="data-obito-container" style="display: none;">
+                                {{ form.data_obito.label(class="form-label") }}
+                                {{ form.data_obito(class="form-control" + (" is-invalid" if form.data_obito.errors else "")) }}
+                                {% if form.data_obito.errors %}
+                                    <div class="invalid-feedback">{{ form.data_obito.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4" id="numero-do-container" style="display: none;">
+                                {{ form.numero_do.label(class="form-label") }}
+                                {{ form.numero_do(class="form-control" + (" is-invalid" if form.numero_do.errors else "")) }}
+                                {% if form.numero_do.errors %}
+                                    <div class="invalid-feedback">{{ form.numero_do.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- TRIA -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <h6 class="mb-3">Triagem para Risco de Insegurança Alimentar (TRIA)</h6>
+                                <div class="form-check mb-2">
+                                    {{ form.tria_alimentos_acabaram(class="form-check-input") }}
+                                    {{ form.tria_alimentos_acabaram.label(class="form-check-label") }}
+                                </div>
+                                <div class="form-check">
+                                    {{ form.tria_comeu_alguns(class="form-check-input") }}
+                                    {{ form.tria_comeu_alguns.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card-footer text-end">
                     <a href="{{ url_for('cadastro.lista_cadastros') }}" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" class="btn btn-primary">Salvar Cadastro</button>
@@ -464,6 +635,74 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Ejecutar al cargar la página
     dadosResponsavel.style.display = responsavelFamiliar.checked ? 'none' : 'flex';
+
+    // Calcular edad y mostrar/ocultar campos de criança
+    const dataNascimento = document.getElementById('data_nascimento');
+    const criancaContainer = document.getElementById('crianca-container');
+    
+    function calcularIdade(dataNasc) {
+        const hoje = new Date();
+        const nascimento = new Date(dataNasc.split('/').reverse().join('-'));
+        let idade = hoje.getFullYear() - nascimento.getFullYear();
+        const m = hoje.getMonth() - nascimento.getMonth();
+        if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
+            idade--;
+        }
+        return idade;
+    }
+
+    function verificarIdade() {
+        if (dataNascimento.value) {
+            const idade = calcularIdade(dataNascimento.value);
+            criancaContainer.style.display = idade <= 9 ? 'block' : 'none';
+        }
+    }
+
+    dataNascimento.addEventListener('change', verificarIdade);
+    verificarIdade();
+
+    // Comunidade Tradicional
+    const membroComunidade = document.getElementById('membro_comunidade');
+    const qualComunidadeContainer = document.getElementById('qual-comunidade-container');
+
+    membroComunidade.addEventListener('change', function() {
+        qualComunidadeContainer.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Orientação Sexual
+    const informaOrientacao = document.getElementById('informa_orientacao');
+    const orientacaoContainer = document.getElementById('orientacao-container');
+
+    informaOrientacao.addEventListener('change', function() {
+        orientacaoContainer.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Identidade de Gênero
+    const informaIdentidade = document.getElementById('informa_identidade');
+    const identidadeContainer = document.getElementById('identidade-container');
+
+    informaIdentidade.addEventListener('change', function() {
+        identidadeContainer.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Deficiência
+    const temDeficiencia = document.getElementById('tem_deficiencia');
+    const deficienciasContainer = document.getElementById('deficiencias-container');
+
+    temDeficiencia.addEventListener('change', function() {
+        deficienciasContainer.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Saída do Cadastro
+    const motivoSaida = document.getElementById('motivo_saida');
+    const dataObitoContainer = document.getElementById('data-obito-container');
+    const numeroDOContainer = document.getElementById('numero-do-container');
+
+    motivoSaida.addEventListener('change', function() {
+        const isObito = this.value === 'obito';
+        dataObitoContainer.style.display = isObito ? 'block' : 'none';
+        numeroDOContainer.style.display = isObito ? 'block' : 'none';
+    });
 });
 </script>
 {% endblock %} 

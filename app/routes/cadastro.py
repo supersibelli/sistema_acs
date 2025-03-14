@@ -74,6 +74,44 @@ def novo_cadastro():
             cadastro.cns_responsavel = form.cns_responsavel.data
             cadastro.cpf_responsavel = form.cpf_responsavel.data
             
+            # Agregar campos sociodemográficos
+            cadastro.parentesco_responsavel = form.parentesco_responsavel.data
+            cadastro.frequenta_escola = form.frequenta_escola.data
+            cadastro.situacao_trabalho = form.situacao_trabalho.data
+            cadastro.crianca_ficacom = form.crianca_ficacom.data
+            cadastro.frequenta_cuidador = form.frequenta_cuidador.data
+            cadastro.participa_grupo = form.participa_grupo.data
+            cadastro.possui_plano_saude = form.possui_plano_saude.data
+            
+            # Comunidade Tradicional
+            cadastro.membro_comunidade = form.membro_comunidade.data
+            cadastro.qual_comunidade = form.qual_comunidade.data if form.membro_comunidade.data else None
+            
+            # Orientação Sexual
+            cadastro.informa_orientacao = form.informa_orientacao.data
+            cadastro.orientacao_sexual = form.orientacao_sexual.data if form.informa_orientacao.data else None
+            
+            # Identidade de Gênero
+            cadastro.informa_identidade = form.informa_identidade.data
+            cadastro.identidade_genero = form.identidade_genero.data if form.informa_identidade.data else None
+            
+            # Deficiência
+            cadastro.tem_deficiencia = form.tem_deficiencia.data
+            if form.tem_deficiencia.data and form.deficiencias.data:
+                cadastro.deficiencias = ','.join(form.deficiencias.data)
+            else:
+                cadastro.deficiencias = None
+            
+            # Saída do Cadastro
+            cadastro.motivo_saida = form.motivo_saida.data
+            if form.motivo_saida.data == 'obito':
+                cadastro.data_obito = datetime.strptime(form.data_obito.data, '%d/%m/%Y').date()
+                cadastro.numero_do = form.numero_do.data
+            
+            # TRIA
+            cadastro.tria_alimentos_acabaram = form.tria_alimentos_acabaram.data
+            cadastro.tria_comeu_alguns = form.tria_comeu_alguns.data
+            
             db.session.add(cadastro)
             db.session.commit()
             flash('Cadastro realizado com sucesso!', 'success')

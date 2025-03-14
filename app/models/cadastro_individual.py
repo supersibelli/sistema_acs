@@ -43,5 +43,39 @@ class CadastroIndividual(db.Model):
     cns_responsavel = db.Column(db.String(15))  # CNS del responsable
     cpf_responsavel = db.Column(db.String(11))  # CPF del responsable
     
+    # Informações Sociodemográficas
+    parentesco_responsavel = db.Column(db.String(20), nullable=False)  # Relação com responsável
+    frequenta_escola = db.Column(db.Boolean, nullable=False)
+    situacao_trabalho = db.Column(db.String(30), nullable=False)
+    crianca_ficacom = db.Column(db.String(20))  # Solo para niños de 0-9 años
+    frequenta_cuidador = db.Column(db.Boolean, nullable=False)
+    participa_grupo = db.Column(db.Boolean, nullable=False)
+    possui_plano_saude = db.Column(db.Boolean, nullable=False)
+    
+    # Comunidade Tradicional
+    membro_comunidade = db.Column(db.Boolean, nullable=False)
+    qual_comunidade = db.Column(db.String(100))  # Obligatorio si membro_comunidade es True
+    
+    # Orientação Sexual
+    informa_orientacao = db.Column(db.Boolean, nullable=False)
+    orientacao_sexual = db.Column(db.String(20))  # Obligatorio si informa_orientacao es True
+    
+    # Identidade de Gênero
+    informa_identidade = db.Column(db.Boolean, nullable=False)
+    identidade_genero = db.Column(db.String(20))  # Obligatorio si informa_identidade es True
+    
+    # Deficiência
+    tem_deficiencia = db.Column(db.Boolean, nullable=False)
+    deficiencias = db.Column(db.String(100))  # Lista separada por comas si tem_deficiencia es True
+    
+    # Saída do Cadastro
+    motivo_saida = db.Column(db.String(20))
+    data_obito = db.Column(db.Date)
+    numero_do = db.Column(db.String(20))  # Número da D.O.
+    
+    # TRIA
+    tria_alimentos_acabaram = db.Column(db.Boolean, nullable=False)
+    tria_comeu_alguns = db.Column(db.Boolean, nullable=False)
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

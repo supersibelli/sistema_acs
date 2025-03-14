@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, SelectField, EmailField, BooleanField
+from wtforms import StringField, DateField, SelectField, EmailField, BooleanField, SelectMultipleField
 from wtforms.validators import DataRequired, Email, Optional, Length, Regexp, ValidationError
 from datetime import datetime
 
@@ -108,6 +108,120 @@ class CadastroIndividualForm(FlaskForm):
                                          Length(11, 11, message="CPF deve ter 11 dígitos"),
                                          Regexp(r'^\d{11}$', message="CPF deve conter apenas números")])
 
+    # Relação de Parentesco
+    parentesco_responsavel = SelectField('Relação de Parentesco com o Responsável Familiar',
+        choices=[
+            ('', 'Selecione...'),
+            ('conjuge', 'Cônjuge/Companheiro(a)'),
+            ('filho', 'Filho(a)'),
+            ('enteado', 'Enteado(a)'),
+            ('neto', 'Neto(a)/Bisneto(a)'),
+            ('pai', 'Pai/Mãe'),
+            ('sogro', 'Sogro(a)'),
+            ('irmao', 'Irmão/Irmã'),
+            ('genro', 'Genro/Nora'),
+            ('outro_parente', 'Outro parente'),
+            ('nao_parente', 'Não parente')
+        ],
+        validators=[DataRequired(message='Relação de parentesco é obrigatória')])
+
+    # Escola/Creche
+    frequenta_escola = BooleanField('Frequenta Escola ou Creche?')
+
+    # Situação Trabalho
+    situacao_trabalho = SelectField('Situação no Mercado de Trabalho',
+        choices=[
+            ('', 'Selecione...'),
+            ('empregador', 'Empregador'),
+            ('assalariado_com_carteira', 'Assalariado com carteira de trabalho'),
+            ('assalariado_sem_carteira', 'Assalariado sem carteira de trabalho'),
+            ('autonomo_com_previdencia', 'Autônomo com previdência social'),
+            ('autonomo_sem_previdencia', 'Autônomo sem previdência social'),
+            ('aposentado', 'Aposentado/Pensionista'),
+            ('desempregado', 'Desempregado'),
+            ('nao_trabalha', 'Não trabalha'),
+            ('servidor_publico', 'Servidor público/militar'),
+            ('outro', 'Outro')
+        ],
+        validators=[DataRequired(message='Situação no mercado de trabalho é obrigatória')])
+
+    # Crianças 0-9 anos
+    crianca_ficacom = SelectField('Crianças de 0 a 9 anos, com quem fica?',
+        choices=[
+            ('', 'Selecione...'),
+            ('adulto', 'Adulto Responsável'),
+            ('crianca', 'Outra(s) Criança(s)'),
+            ('adolescente', 'Adolescente'),
+            ('sozinha', 'Sozinha'),
+            ('creche', 'Creche'),
+            ('outro', 'Outro')
+        ])
+
+    # Campos Sim/Não simples
+    frequenta_cuidador = BooleanField('Frequenta Cuidador Tradicional?')
+    participa_grupo = BooleanField('Participa de Algum Grupo Comunitário?')
+    possui_plano_saude = BooleanField('Possui Plano de Saúde Privado?')
+
+    # Comunidade Tradicional
+    membro_comunidade = BooleanField('É Membro de Povo ou Comunidade Tradicional?')
+    qual_comunidade = StringField('Qual?')
+
+    # Orientação Sexual
+    informa_orientacao = BooleanField('Deseja Informar Orientação Sexual?')
+    orientacao_sexual = SelectField('Orientação Sexual',
+        choices=[
+            ('', 'Selecione...'),
+            ('heterossexual', 'Heterossexual'),
+            ('gay', 'Gay'),
+            ('lesbica', 'Lésbica'),
+            ('bissexual', 'Bissexual'),
+            ('assexual', 'Assexual'),
+            ('pansexual', 'Pansexual'),
+            ('outro', 'Outro')
+        ])
+
+    # Identidade de Gênero
+    informa_identidade = BooleanField('Deseja Informar Identidade de Gênero?')
+    identidade_genero = SelectField('Identidade de Gênero',
+        choices=[
+            ('', 'Selecione...'),
+            ('homem_cis', 'Homem cisgênero'),
+            ('mulher_cis', 'Mulher cisgênero'),
+            ('homem_trans', 'Homem transgênero'),
+            ('mulher_trans', 'Mulher transgênero'),
+            ('travesti', 'Travesti'),
+            ('nao_binario', 'Não-Binário'),
+            ('outro', 'Outro')
+        ])
+
+    # Deficiência
+    tem_deficiencia = BooleanField('Tem Alguma Deficiência?')
+    deficiencias = SelectMultipleField('Deficiências',
+        choices=[
+            ('auditiva', 'Auditiva'),
+            ('intelectual', 'Intelectual/Cognitiva'),
+            ('visual', 'Visual'),
+            ('fisica', 'Física'),
+            ('outra', 'Outra')
+        ])
+
+    # Saída do Cadastro
+    motivo_saida = SelectField('Saída do Cidadão do Cadastro',
+        choices=[
+            ('', 'Selecione...'),
+            ('mudanca', 'Mudança de território'),
+            ('obito', 'Óbito')
+        ])
+    data_obito = StringField('Data do óbito',
+        validators=[Optional(),
+                   Regexp(r'^\d{2}/\d{2}/\d{4}$', message="Use o formato DD/MM/AAAA"),
+                   validate_date])
+    numero_do = StringField('Número da D.O.')
+
+    # TRIA
+    tria_alimentos_acabaram = BooleanField('Nos últimos três meses, os alimentos acabaram antes que você tivesse dinheiro para comprar mais comida?')
+    tria_comeu_alguns = BooleanField('Nos últimos três meses, você comeu apenas alguns alimentos que ainda tinha, porque o dinheiro acabou?')
+
     def validate_nome_mae(self, field):
         if not self.mae_desconhecida.data and not field.data:
             raise ValidationError('Nome da mãe é obrigatório quando não for desconhecido')
@@ -147,4 +261,29 @@ class CadastroIndividualForm(FlaskForm):
     def validate_cns_responsavel(self, field):
         if not self.responsavel_familiar.data:
             if not field.data and not self.cpf_responsavel.data:
-                raise ValidationError('É necessário informar CNS ou CPF do responsável familiar') 
+                raise ValidationError('É necessário informar CNS ou CPF do responsável familiar')
+
+    # Validaciones adicionales
+    def validate_qual_comunidade(self, field):
+        if self.membro_comunidade.data and not field.data:
+            raise ValidationError('Informe qual comunidade tradicional')
+
+    def validate_orientacao_sexual(self, field):
+        if self.informa_orientacao.data and not field.data:
+            raise ValidationError('Selecione a orientação sexual')
+
+    def validate_identidade_genero(self, field):
+        if self.informa_identidade.data and not field.data:
+            raise ValidationError('Selecione a identidade de gênero')
+
+    def validate_deficiencias(self, field):
+        if self.tem_deficiencia.data and not field.data:
+            raise ValidationError('Selecione pelo menos uma deficiência')
+
+    def validate_data_obito(self, field):
+        if self.motivo_saida.data == 'obito' and not field.data:
+            raise ValidationError('Data do óbito é obrigatória')
+
+    def validate_numero_do(self, field):
+        if self.motivo_saida.data == 'obito' and not field.data:
+            raise ValidationError('Número da D.O. é obrigatório') 

@@ -189,3 +189,41 @@ Implementar la sección "Informações Sociodemográficas" que incluye:
 6. Participa de Algum Grupo Comunitário
 7. Possui Plano de Saúde Privado
 8. Membro de Povo ou Comunidade Tradicional
+
+=== VERSIÓN ESTABLE ===
+Tag: v0.1.2 - "Segunda seção do cadastro individual funcionando"
+Commit: "Segunda seção do cadastro individual: Informações Sociodemográficas"
+
+Para volver a esta versión usar:
+```
+git checkout v0.1.2
+```
+
+✅ Completado:
+- Segunda etapa del formulario Cadastro Individual:
+  - Sección "Informações Sociodemográficas" implementada con:
+    - Relação de Parentesco (10 opciones)
+    - Frequenta Escola ou Creche (Sim/Não)
+    - Situação no Mercado de Trabalho (10 opciones)
+    - Crianças de 0 a 9 anos (6 opciones, condicional por edad)
+    - Frequenta Cuidador Tradicional (Sim/Não)
+    - Participa de Grupo Comunitário (Sim/Não)
+    - Possui Plano de Saúde Privado (Sim/Não)
+    - Membro de Comunidade Tradicional (Sim/Não + campo qual)
+    - Orientação Sexual (Sim/Não + 8 opciones)
+    - Identidade de Gênero (Sim/Não + 8 opciones)
+    - Deficiência (Sim/Não + 5 opciones múltiples)
+    - Saída do Cadastro (2 opciones + campos data/DO)
+    - TRIA (2 preguntas Sim/Não)
+
+  - Validaciones implementadas:
+    - Campos obligatorios
+    - Campos condicionales según respuestas
+    - Validación de fechas para óbito
+    - Selección múltiple para deficiencias
+    - Mostrar/ocultar campos según edad
+    - Mostrar/ocultar campos según selecciones
+
+📝 Próximo Paso:
+---------------
+Implementar la sección "Condições/Situações de Saúde Gerais"
