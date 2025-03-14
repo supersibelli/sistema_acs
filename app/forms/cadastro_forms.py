@@ -85,6 +85,29 @@ class CadastroIndividualForm(FlaskForm):
                       validators=[Optional(),
                                 Email(message="Digite um e-mail válido")])
 
+    # Campos del ciudadano
+    cns_cidadao = StringField('CNS do Cidadão',
+                           validators=[Optional(),
+                                     Length(15, 15, message="CNS deve ter 15 dígitos"),
+                                     Regexp(r'^\d{15}$', message="CNS deve conter apenas números")])
+    
+    cpf_cidadao = StringField('CPF do Cidadão',
+                           validators=[Optional(),
+                                     Length(11, 11, message="CPF deve ter 11 dígitos"),
+                                     Regexp(r'^\d{11}$', message="CPF deve conter apenas números")])
+    
+    responsavel_familiar = BooleanField('Cidadão é o Responsável Familiar?')
+    
+    cns_responsavel = StringField('CNS do Responsável Familiar',
+                               validators=[Optional(),
+                                         Length(15, 15, message="CNS deve ter 15 dígitos"),
+                                         Regexp(r'^\d{15}$', message="CNS deve conter apenas números")])
+    
+    cpf_responsavel = StringField('CPF do Responsável Familiar',
+                               validators=[Optional(),
+                                         Length(11, 11, message="CPF deve ter 11 dígitos"),
+                                         Regexp(r'^\d{11}$', message="CPF deve conter apenas números")])
+
     def validate_nome_mae(self, field):
         if not self.mae_desconhecida.data and not field.data:
             raise ValidationError('Nome da mãe é obrigatório quando não for desconhecido')
@@ -115,4 +138,13 @@ class CadastroIndividualForm(FlaskForm):
 
     def validate_data_entrada_brasil(self, field):
         if self.nacionalidade.data == 'estrangeiro' and not field.data:
-            raise ValidationError('Data de entrada no Brasil é obrigatória para estrangeiros') 
+            raise ValidationError('Data de entrada no Brasil é obrigatória para estrangeiros')
+
+    def validate_cns_cidadao(self, field):
+        if not field.data and not self.cpf_cidadao.data:
+            raise ValidationError('É necessário informar CNS ou CPF do cidadão')
+            
+    def validate_cns_responsavel(self, field):
+        if not self.responsavel_familiar.data:
+            if not field.data and not self.cpf_responsavel.data:
+                raise ValidationError('É necessário informar CNS ou CPF do responsável familiar') 

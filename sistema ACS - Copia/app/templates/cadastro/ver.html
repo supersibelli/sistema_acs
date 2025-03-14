@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Ver Cadastro - {{ cadastro.nome_completo }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Cadastro Individual</h2>
+        <div>
+            <a href="{{ url_for('cadastro.editar_cadastro', id=cadastro.id) }}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="{{ url_for('main.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <!-- Identificação do Cidadão -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Identificação do Cidadão</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nome:</strong> {{ cadastro.nome_completo }}</p>
+                    <p><strong>Nome Social:</strong> {{ cadastro.nome_social or 'Não informado' }}</p>
+                    <p><strong>Data de Nascimento:</strong> {{ cadastro.data_nascimento.strftime('%d/%m/%Y') }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Sexo:</strong> {{ dict(SEXO_CHOICES).get(cadastro.sexo) }}</p>
+                    <p><strong>Raça/Cor:</strong> {{ dict(RACA_COR_CHOICES).get(cadastro.raca_cor) }}</p>
+                    <p><strong>Nacionalidade:</strong> {{ dict(NACIONALIDADE_CHOICES).get(cadastro.nacionalidade) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documentos -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Documentos</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <p><strong>CNS:</strong> {{ cadastro.cns or 'Não informado' }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>CPF:</strong> {{ cadastro.cpf or 'Não informado' }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>NIS:</strong> {{ cadastro.numero_nis or 'Não informado' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informações Sociodemográficas -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Informações Sociodemográficas</h4>
+        </div>
+        <div class="card-body">
+            {% if cadastro.info_sociodemografica %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Frequenta Escola:</strong> {{ 'Sim' if cadastro.info_sociodemografica.frequenta_escola else 'Não' }}</p>
+                    <p><strong>Curso mais elevado:</strong> {{ dict(CURSO_CHOICES).get(cadastro.info_sociodemografica.curso_mais_elevado) }}</p>
+                    <p><strong>Situação de Trabalho:</strong> {{ dict(SITUACAO_TRABALHO_CHOICES).get(cadastro.info_sociodemografica.situacao_trabalho) }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Orientação Sexual:</strong> 
+                        {% if cadastro.info_sociodemografica.status_deseja_informar_orientacao_sexual %}
+                            {{ dict(ORIENTACAO_SEXUAL_CHOICES).get(cadastro.info_sociodemografica.orientacao_sexual) }}
+                        {% else %}
+                            Não deseja informar
+                        {% endif %}
+                    </p>
+                    <p><strong>Identidade de Gênero:</strong>
+                        {% if cadastro.info_sociodemografica.status_deseja_informar_identidade_genero %}
+                            {{ dict(IDENTIDADE_GENERO_CHOICES).get(cadastro.info_sociodemografica.identidade_genero) }}
+                        {% else %}
+                            Não deseja informar
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-muted">Informações sociodemográficas não cadastradas</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Condições de Saúde -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Condições de Saúde</h4>
+        </div>
+        <div class="card-body">
+            {% if cadastro.condicoes_saude %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Gestante:</strong> {{ 'Sim' if cadastro.condicoes_saude.status_eh_gestante else 'Não' }}</p>
+                    <p><strong>Hipertensão:</strong> {{ 'Sim' if cadastro.condicoes_saude.status_tem_hipertensao else 'Não' }}</p>
+                    <p><strong>Diabetes:</strong> {{ 'Sim' if cadastro.condicoes_saude.status_tem_diabetes else 'Não' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Deficiência:</strong> 
+                        {% if cadastro.condicoes_saude.status_tem_deficiencia %}
+                            {{ cadastro.condicoes_saude.deficiencias }}
+                        {% else %}
+                            Não
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-muted">Condições de saúde não cadastradas</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Situação de Rua -->
+    {% if cadastro.situacao_rua and cadastro.situacao_rua.status_situacao_rua %}
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Situação de Rua</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Tempo em Situação de Rua:</strong> 
+                        {{ dict(TEMPO_RUA_CHOICES).get(cadastro.situacao_rua.tempo_rua) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Dados de Registro -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Dados de Registro</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Criado em:</strong> {{ cadastro.criado_em.strftime('%d/%m/%Y %H:%M') }}</p>
+                    <p><strong>Criado por:</strong> {{ cadastro.criado_por.nome_completo }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Última atualização:</strong> {{ cadastro.atualizado_em.strftime('%d/%m/%Y %H:%M') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

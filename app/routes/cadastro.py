@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from app.models.cadastro_individual import CadastroIndividual
 from app.forms.cadastro_forms import CadastroIndividualForm
 from app import db
-from flask_login import login_required
+from flask_login import login_required, current_user
 from datetime import datetime
 
 bp = Blueprint('cadastro', __name__)
@@ -11,6 +11,16 @@ bp = Blueprint('cadastro', __name__)
 @login_required
 def novo_cadastro():
     form = CadastroIndividualForm()
+    
+    # Pre-llenar datos del profesional desde el usuario logueado
+    dados_profissional = {
+        'cns_profissional': current_user.cns,
+        'cbo': current_user.cbo,
+        'cnes': current_user.cnes,
+        'ine': current_user.ine,
+        'microarea': current_user.microarea,
+        'data_cadastro': datetime.now().strftime('%d/%m/%Y')
+    }
     
     if form.validate_on_submit():
         try:
@@ -49,6 +59,21 @@ def novo_cadastro():
             cadastro.mae_desconhecida = form.mae_desconhecida.data
             cadastro.pai_desconhecido = form.pai_desconhecido.data
             
+            # Agregar datos del profesional
+            cadastro.cns_profissional = current_user.cns
+            cadastro.cbo = current_user.cbo
+            cadastro.cnes = current_user.cnes
+            cadastro.ine = current_user.ine
+            cadastro.microarea = current_user.microarea
+            cadastro.data_cadastro = datetime.now()
+            
+            # Agregar campos del ciudadano
+            cadastro.cns_cidadao = form.cns_cidadao.data
+            cadastro.cpf_cidadao = form.cpf_cidadao.data
+            cadastro.responsavel_familiar = form.responsavel_familiar.data
+            cadastro.cns_responsavel = form.cns_responsavel.data
+            cadastro.cpf_responsavel = form.cpf_responsavel.data
+            
             db.session.add(cadastro)
             db.session.commit()
             flash('Cadastro realizado com sucesso!', 'success')
@@ -62,7 +87,7 @@ def novo_cadastro():
     if form.errors:
         flash('Por favor, corrija os erros no formulário.', 'danger')
         
-    return render_template('cadastro/form.html', form=form)
+    return render_template('cadastro/form.html', form=form, dados_profissional=dados_profissional)
 
 @bp.route('/cadastros')
 @login_required

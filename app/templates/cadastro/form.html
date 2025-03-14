@@ -20,6 +20,42 @@
                 
                 <div class="card mb-4">
                     <div class="card-header">
+                        <h5>Dados do Profissional</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">CNS do Profissional</label>
+                                <p class="form-control-static">{{ dados_profissional.cns_profissional }}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">CBO</label>
+                                <p class="form-control-static">{{ dados_profissional.cbo }}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">CNES</label>
+                                <p class="form-control-static">{{ dados_profissional.cnes }}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">INE</label>
+                                <p class="form-control-static">{{ dados_profissional.ine }}</p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Microárea</label>
+                                <p class="form-control-static">{{ dados_profissional.microarea }}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Data do Cadastro</label>
+                                <p class="form-control-static">{{ dados_profissional.data_cadastro }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
                         <h5>Identificação do Cidadão</h5>
                     </div>
                     <div class="card-body">
@@ -184,6 +220,49 @@
                             <div class="col-md-4 mb-3">
                                 {{ form.email.label(class="form-label") }}
                                 {{ form.email(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.cns_cidadao.label(class="form-label") }}
+                                {{ form.cns_cidadao(class="form-control" + (" is-invalid" if form.cns_cidadao.errors else "")) }}
+                                {% if form.cns_cidadao.errors %}
+                                    <div class="invalid-feedback">{{ form.cns_cidadao.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.cpf_cidadao.label(class="form-label") }}
+                                {{ form.cpf_cidadao(class="form-control" + (" is-invalid" if form.cpf_cidadao.errors else "")) }}
+                                {% if form.cpf_cidadao.errors %}
+                                    <div class="invalid-feedback">{{ form.cpf_cidadao.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="form-check">
+                                    {{ form.responsavel_familiar(class="form-check-input") }}
+                                    {{ form.responsavel_familiar.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="dados_responsavel" class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.cns_responsavel.label(class="form-label") }}
+                                {{ form.cns_responsavel(class="form-control" + (" is-invalid" if form.cns_responsavel.errors else "")) }}
+                                {% if form.cns_responsavel.errors %}
+                                    <div class="invalid-feedback">{{ form.cns_responsavel.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.cpf_responsavel.label(class="form-label") }}
+                                {{ form.cpf_responsavel(class="form-control" + (" is-invalid" if form.cpf_responsavel.errors else "")) }}
+                                {% if form.cpf_responsavel.errors %}
+                                    <div class="invalid-feedback">{{ form.cpf_responsavel.errors[0] }}</div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -370,6 +449,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Agregar al script existente
+    const responsavelFamiliar = document.getElementById('responsavel_familiar');
+    const dadosResponsavel = document.getElementById('dados_responsavel');
+
+    responsavelFamiliar.addEventListener('change', function() {
+        dadosResponsavel.style.display = this.checked ? 'none' : 'flex';
+        if (this.checked) {
+            document.getElementById('cns_responsavel').value = '';
+            document.getElementById('cpf_responsavel').value = '';
+        }
+    });
+
+    // Ejecutar al cargar la página
+    dadosResponsavel.style.display = responsavelFamiliar.checked ? 'none' : 'flex';
 });
 </script>
 {% endblock %} 

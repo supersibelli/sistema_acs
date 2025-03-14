@@ -16,6 +16,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
+                            <th>CNS/CPF</th>
                             <th>Data de Nascimento</th>
                             <th>Telefone</th>
                             <th>Ações</th>
@@ -25,6 +26,7 @@
                         {% for cadastro in cadastros %}
                         <tr>
                             <td>{{ cadastro.nome_completo }}</td>
+                            <td>{{ cadastro.cns_cidadao or cadastro.cpf_cidadao }}</td>
                             <td>{{ cadastro.data_nascimento.strftime('%d/%m/%Y') }}</td>
                             <td>{{ cadastro.telefone_celular }}</td>
                             <td>

@@ -28,5 +28,20 @@ class CadastroIndividual(db.Model):
     telefone_celular = db.Column(db.String(15))
     email = db.Column(db.String(100))
     
+    # Campos del profesional (autollenados)
+    cns_profissional = db.Column(db.String(15), nullable=False)
+    cbo = db.Column(db.String(6), nullable=False)
+    cnes = db.Column(db.String(7), nullable=False)
+    ine = db.Column(db.String(10), nullable=False)
+    microarea = db.Column(db.String(2), nullable=False)
+    data_cadastro = db.Column(db.DateTime, nullable=False)
+    
+    # Campos de identificación del ciudadano
+    cns_cidadao = db.Column(db.String(15))  # CNS del ciudadano
+    cpf_cidadao = db.Column(db.String(11))  # CPF del ciudadano
+    responsavel_familiar = db.Column(db.Boolean, default=False)
+    cns_responsavel = db.Column(db.String(15))  # CNS del responsable
+    cpf_responsavel = db.Column(db.String(11))  # CPF del responsable
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

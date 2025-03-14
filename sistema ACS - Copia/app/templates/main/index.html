@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Painel Principal - Sistema ACS{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-user-circle text-primary me-2"></i>
+                    Informações do Profissional
+                </h5>
+                <hr>
+                <p><strong><i class="fas fa-user me-2"></i>Nome:</strong> {{ user.nome_completo }}</p>
+                <p><strong><i class="fas fa-id-card me-2"></i>CNS:</strong> {{ user.cns }}</p>
+                <p><strong><i class="fas fa-briefcase me-2"></i>CBO:</strong> {{ user.cbo }}</p>
+                <p><strong><i class="fas fa-hospital me-2"></i>CNES:</strong> {{ user.cnes }}</p>
+                <p><strong><i class="fas fa-fingerprint me-2"></i>INE:</strong> {{ user.ine }}</p>
+                <p><strong><i class="fas fa-map-marker-alt me-2"></i>Microárea:</strong> {{ user.microarea }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-tasks text-primary me-2"></i>
+                    Ações Disponíveis
+                </h5>
+                <hr>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">Cadastro Individual</h5>
+                                <p class="card-text">Acessar o formulário de cadastro individual</p>
+                                <a href="#" class="btn btn-primary">
+                                    <i class="fas fa-file-alt me-1"></i>Acessar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

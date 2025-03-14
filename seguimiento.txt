@@ -123,18 +123,60 @@ ESTÁNDARES A SEGUIR:
 ✅ Completado:
 - Primera etapa del formulario Cadastro Individual:
   - Sección "Identificação do Cidadão" implementada con:
-    - Campos básicos de identificación
+    - Campos implementados:
+      - Nome completo (obrigatório)
+      - Nome social
+      - Data de nascimento (obrigatório)
+      - Sexo (obrigatório)
+      - Raça/Cor (obrigatório)
+      - Etnia (obrigatório se indígena)
+      - Nº NIS (PIS/PASEP)
+      - Nome completo da mãe (obrigatório ou desconhecido)
+      - Nome completo do pai (obrigatório ou desconhecido)
+      - Nacionalidade (obrigatório)
+      - País de nascimento (condicional)
+      - Data de naturalização (condicional)
+      - Portaria de naturalização (condicional)
+      - Município e UF de nascimento (condicional)
+      - Data de entrada no Brasil (condicional)
+      - Telefone celular
+      - E-mail
     - Validación de fechas en formato DD/MM/AAAA
     - Manejo de padres desconocidos con validaciones
     - Campos condicionales según nacionalidad
     - Validaciones en cliente y servidor
     - Mensajes de error en portugués
     - Limpieza automática de campos no aplicables
+  - Datos del profesional autollenados desde el login:
+    - CNS do profissional
+    - CBO
+    - CNES
+    - INE
+    - Microárea
+    - Data do cadastro
+  - Campos de identificación del ciudadano:
+    - CNS/CPF do cidadão (obligatorio uno de los dos)
+    - Responsável familiar (checkbox)
+    - CNS/CPF do responsável (obligatorio si no es responsable)
 
 Cambios y Correcciones:
   - Cambio del título de sección de "Identificação do Usuário/Cidadão" a "Identificação do Cidadão"
   - Corrección de validaciones para campos de padres desconocidos
   - Mejora en el manejo de errores y mensajes en portugués
+  - Agregada validación para CNS/CPF
+  - Implementada lógica para mostrar/ocultar campos del responsable familiar
+  - Validaciones específicas implementadas:
+    - Campos obligatorios marcados con *
+    - Validación de formato de fechas (DD/MM/AAAA)
+    - Validación de CNS (15 dígitos numéricos)
+    - Validación de CPF (11 dígitos numéricos)
+    - Validación de NIS (11 dígitos numéricos)
+    - Validación de teléfono (11 dígitos numéricos)
+    - Validación de email (formato válido)
+    - Validaciones condicionales:
+      - Etnia obligatoria para indígenas
+      - Campos específicos según nacionalidad
+      - CNS/CPF del responsable si no es responsable familiar
 
 📝 Próximo Paso:
 ---------------
