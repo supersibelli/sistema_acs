@@ -18,6 +18,17 @@
             <form method="POST" class="needs-validation" novalidate>
                 {{ form.csrf_token }}
                 
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        {{ form.digitado_por.label(class="form-label") }}
+                        {{ form.digitado_por(class="form-control", readonly=true) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.data_digitacao.label(class="form-label") }}
+                        {{ form.data_digitacao(class="form-control", readonly=true) }}
+                    </div>
+                </div>
+
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5>Dados do Profissional</h5>
@@ -43,8 +54,14 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-3">
-                                <label class="form-label">Microárea</label>
-                                <p class="form-control-static">{{ dados_profissional.microarea }}</p>
+                                {{ form.microarea.label(class="form-label") }}
+                                {{ form.microarea(class="form-control", readonly=true) }}
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check mt-4">
+                                    {{ form.fora_area(class="form-check-input") }}
+                                    {{ form.fora_area.label(class="form-check-label") }}
+                                </div>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Data do Cadastro</label>
@@ -275,17 +292,28 @@
                     <div class="card-body">
                         <!-- Relação de Parentesco -->
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 {{ form.parentesco_responsavel.label(class="form-label") }}
                                 {{ form.parentesco_responsavel(class="form-control" + (" is-invalid" if form.parentesco_responsavel.errors else "")) }}
                                 {% if form.parentesco_responsavel.errors %}
                                     <div class="invalid-feedback">{{ form.parentesco_responsavel.errors[0] }}</div>
                                 {% endif %}
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-check mt-4">
+                        </div>
+
+                        <!-- Escola/Creche -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
                                     {{ form.frequenta_escola(class="form-check-input") }}
                                     {{ form.frequenta_escola.label(class="form-check-label") }}
+                                </div>
+                                <div id="curso-container">
+                                    {{ form.curso_frequenta.label(class="form-label") }}
+                                    {{ form.curso_frequenta(class="form-select" + (" is-invalid" if form.curso_frequenta.errors else "")) }}
+                                    {% if form.curso_frequenta.errors %}
+                                        <div class="invalid-feedback">{{ form.curso_frequenta.errors[0] }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -294,9 +322,20 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 {{ form.situacao_trabalho.label(class="form-label") }}
-                                {{ form.situacao_trabalho(class="form-control" + (" is-invalid" if form.situacao_trabalho.errors else "")) }}
+                                {{ form.situacao_trabalho(class="form-select" + (" is-invalid" if form.situacao_trabalho.errors else "")) }}
                                 {% if form.situacao_trabalho.errors %}
                                     <div class="invalid-feedback">{{ form.situacao_trabalho.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Ocupação -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                {{ form.ocupacao.label(class="form-label") }}
+                                {{ form.ocupacao(class="form-control" + (" is-invalid" if form.ocupacao.errors else "")) }}
+                                {% if form.ocupacao.errors %}
+                                    <div class="invalid-feedback">{{ form.ocupacao.errors[0] }}</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -657,6 +696,132 @@
                     </div>
                 </div>
 
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Situação de Rua</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Situação de Rua -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.situacao_rua(class="form-check-input") }}
+                                    {{ form.situacao_rua.label(class="form-check-label") }}
+                                </div>
+                                <div id="situacao-rua-container" style="display: none;">
+                                    {{ form.tempo_rua.label(class="form-label") }}
+                                    {{ form.tempo_rua(class="form-select" + (" is-invalid" if form.tempo_rua.errors else "")) }}
+                                    {% if form.tempo_rua.errors %}
+                                        <div class="invalid-feedback">{{ form.tempo_rua.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acompanhamento Institucional -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.acompanhado_instituicao(class="form-check-input") }}
+                                    {{ form.acompanhado_instituicao.label(class="form-check-label") }}
+                                </div>
+                                <div id="instituicao-container" style="display: none;">
+                                    {{ form.qual_instituicao.label(class="form-label") }}
+                                    {{ form.qual_instituicao(class="form-control" + (" is-invalid" if form.qual_instituicao.errors else "")) }}
+                                    {% if form.qual_instituicao.errors %}
+                                        <div class="invalid-feedback">{{ form.qual_instituicao.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Benefícios -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.recebe_beneficio(class="form-check-input") }}
+                                    {{ form.recebe_beneficio.label(class="form-check-label") }}
+                                </div>
+                                <div id="beneficio-container" style="display: none;">
+                                    {{ form.qual_beneficio.label(class="form-label") }}
+                                    {{ form.qual_beneficio(class="form-control" + (" is-invalid" if form.qual_beneficio.errors else "")) }}
+                                    {% if form.qual_beneficio.errors %}
+                                        <div class="invalid-feedback">{{ form.qual_beneficio.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Referência Familiar -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.possui_referencia_familiar(class="form-check-input") }}
+                                    {{ form.possui_referencia_familiar.label(class="form-check-label") }}
+                                </div>
+                                <div id="referencia-familiar-container" style="display: none;">
+                                    {{ form.grau_parentesco.label(class="form-label") }}
+                                    {{ form.grau_parentesco(class="form-control" + (" is-invalid" if form.grau_parentesco.errors else "")) }}
+                                    {% if form.grau_parentesco.errors %}
+                                        <div class="invalid-feedback">{{ form.grau_parentesco.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visitas Familiares -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.visita_familiar(class="form-check-input") }}
+                                    {{ form.visita_familiar.label(class="form-check-label") }}
+                                </div>
+                                <div id="visita-familiar-container" style="display: none;">
+                                    {{ form.frequencia_visitas.label(class="form-label") }}
+                                    {{ form.frequencia_visitas(class="form-select" + (" is-invalid" if form.frequencia_visitas.errors else "")) }}
+                                    {% if form.frequencia_visitas.errors %}
+                                        <div class="invalid-feedback">{{ form.frequencia_visitas.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Higiene -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check mb-2">
+                                    {{ form.acesso_higiene(class="form-check-input") }}
+                                    {{ form.acesso_higiene.label(class="form-check-label") }}
+                                </div>
+                                <div id="higiene-container" style="display: none;">
+                                    {{ form.tipos_higiene(class="form-select" + (" is-invalid" if form.tipos_higiene.errors else "")) }}
+                                    {% if form.tipos_higiene.errors %}
+                                        <div class="invalid-feedback">{{ form.tipos_higiene.errors[0] }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alimentação -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.quantidade_alimentacao.label(class="form-label") }}
+                                {{ form.quantidade_alimentacao(class="form-control" + (" is-invalid" if form.quantidade_alimentacao.errors else "")) }}
+                                {% if form.quantidade_alimentacao.errors %}
+                                    <div class="invalid-feedback">{{ form.quantidade_alimentacao.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.origem_alimentacao.label(class="form-label") }}
+                                {{ form.origem_alimentacao(class="form-select" + (" is-invalid" if form.origem_alimentacao.errors else "")) }}
+                                {% if form.origem_alimentacao.errors %}
+                                    <div class="invalid-feedback">{{ form.origem_alimentacao.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card-footer text-end">
                     <a href="{{ url_for('cadastro.lista_cadastros') }}" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" class="btn btn-primary">Salvar Cadastro</button>
@@ -963,6 +1128,109 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!this.checked) {
             const select = document.getElementById('deficiencias');
             Array.from(select.options).forEach(option => option.selected = false);
+        }
+    });
+
+    // Situação de Rua
+    const situacaoRua = document.getElementById('situacao_rua');
+    const situacaoRuaContainer = document.getElementById('situacao-rua-container');
+
+    situacaoRua.addEventListener('change', function() {
+        situacaoRuaContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('tempo_rua').value = '';
+        }
+    });
+
+    // Acompanhamento Institucional
+    const acompanhadoInstituicao = document.getElementById('acompanhado_instituicao');
+    const instituicaoContainer = document.getElementById('instituicao-container');
+
+    acompanhadoInstituicao.addEventListener('change', function() {
+        instituicaoContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('qual_instituicao').value = '';
+        }
+    });
+
+    // Benefícios
+    const recebeBeneficio = document.getElementById('recebe_beneficio');
+    const beneficioContainer = document.getElementById('beneficio-container');
+
+    recebeBeneficio.addEventListener('change', function() {
+        beneficioContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('qual_beneficio').value = '';
+        }
+    });
+
+    // Referência Familiar
+    const possuiReferencia = document.getElementById('possui_referencia_familiar');
+    const referenciaContainer = document.getElementById('referencia-familiar-container');
+
+    possuiReferencia.addEventListener('change', function() {
+        referenciaContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('grau_parentesco').value = '';
+        }
+    });
+
+    // Visitas Familiares
+    const visitaFamiliar = document.getElementById('visita_familiar');
+    const visitaContainer = document.getElementById('visita-familiar-container');
+
+    visitaFamiliar.addEventListener('change', function() {
+        visitaContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('frequencia_visitas').value = '';
+        }
+    });
+
+    // Higiene
+    const acessoHigiene = document.getElementById('acesso_higiene');
+    const higieneContainer = document.getElementById('higiene-container');
+
+    acessoHigiene.addEventListener('change', function() {
+        higieneContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            const select = document.getElementById('tipos_higiene');
+            Array.from(select.options).forEach(option => option.selected = false);
+        }
+    });
+
+    // Ejecutar al cargar la página para establecer estados iniciales
+    situacaoRuaContainer.style.display = situacaoRua.checked ? 'block' : 'none';
+    instituicaoContainer.style.display = acompanhadoInstituicao.checked ? 'block' : 'none';
+    beneficioContainer.style.display = recebeBeneficio.checked ? 'block' : 'none';
+    referenciaContainer.style.display = possuiReferencia.checked ? 'block' : 'none';
+    visitaContainer.style.display = visitaFamiliar.checked ? 'block' : 'none';
+    higieneContainer.style.display = acessoHigiene.checked ? 'block' : 'none';
+
+    // Escola/Creche
+    const frequentaEscola = document.getElementById('frequenta_escola');
+    const cursoContainer = document.getElementById('curso-container');
+
+    frequentaEscola.addEventListener('change', function() {
+        if (!this.checked) {
+            document.getElementById('curso_frequenta').value = 'nenhum';
+        }
+    });
+
+    // Ejecutar al cargar la página
+    if (!frequentaEscola.checked) {
+        document.getElementById('curso_frequenta').value = 'nenhum';
+    }
+
+    // Al final del script existente
+    const foraArea = document.getElementById('fora_area');
+    const microarea = document.getElementById('microarea');
+    const microareaOriginal = '{{ current_user.microarea }}';  // Usar la microárea del ACS
+
+    foraArea.addEventListener('change', function() {
+        if (this.checked) {
+            microarea.value = 'FA';
+        } else {
+            microarea.value = microareaOriginal;
         }
     });
 });

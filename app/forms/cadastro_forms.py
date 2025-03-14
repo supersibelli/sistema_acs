@@ -126,7 +126,26 @@ class CadastroIndividualForm(FlaskForm):
         validators=[DataRequired(message='Relação de parentesco é obrigatória')])
 
     # Escola/Creche
-    frequenta_escola = BooleanField('Frequenta Escola ou Creche?')
+    frequenta_escola = BooleanField('Frequenta Escola ou Creche? *')
+    curso_frequenta = SelectField('Qual é o Curso Mais Elevado que Frequenta ou Frequentou?',
+        choices=[
+            ('', 'Selecione...'),
+            ('creche', 'Creche'),
+            ('pre_escola', 'Pré-escola (exceto CA)'),
+            ('classe_alfabetizacao', 'Classe de Alfabetização - CA'),
+            ('fundamental_1_4', 'Ensino Fundamental 1ª a 4ª séries'),
+            ('fundamental_5_8', 'Ensino Fundamental 5ª a 8ª séries'),
+            ('fundamental_completo', 'Ensino Fundamental Completo'),
+            ('fundamental_especial', 'Ensino Fundamental Especial'),
+            ('fundamental_eja_1_4', 'Ensino Fundamental EJA - séries iniciais (Supletivo 1ª a 4ª)'),
+            ('fundamental_eja_5_8', 'Ensino Fundamental EJA - séries finais (Supletivo 5ª a 8ª)'),
+            ('medio', 'Ensino Médio, Médio 2º Ciclo (Científico, Técnico etc.)'),
+            ('medio_especial', 'Ensino Médio Especial'),
+            ('medio_eja', 'Ensino Médio EJA (Supletivo)'),
+            ('superior', 'Superior, Aperfeiçoamento, Especialização, Mestrado, Doutorado'),
+            ('alfabetizacao_adultos', 'Alfabetização para Adultos (Mobral etc.)'),
+            ('nenhum', 'Nenhum')
+        ])
 
     # Situação Trabalho
     situacao_trabalho = SelectField('Situação no Mercado de Trabalho',
@@ -144,6 +163,10 @@ class CadastroIndividualForm(FlaskForm):
             ('outro', 'Outro')
         ],
         validators=[DataRequired(message='Situação no mercado de trabalho é obrigatória')])
+
+    # Ocupação
+    ocupacao = StringField('Ocupação',
+        validators=[Length(max=100, message='Máximo de 100 caracteres')])
 
     # Crianças 0-9 anos
     crianca_ficacom = SelectField('Crianças de 0 a 9 anos, com quem fica?',
@@ -297,6 +320,80 @@ class CadastroIndividualForm(FlaskForm):
     outras_condicoes = StringField('Outras Condições de Saúde',
         validators=[Optional(), Length(max=300, message='Máximo de 300 caracteres')])
 
+    # Situação de Rua
+    situacao_rua = BooleanField('Está em Situação de Rua? *')
+    
+    tempo_rua = SelectField('Tempo em Situação de Rua?',
+        choices=[
+            ('', 'Selecione...'),
+            ('menos_6', '< 6 meses'),
+            ('6_12', '6 a 12 meses'),
+            ('1_5', '1 a 5 anos'),
+            ('mais_5', '> 5 anos')
+        ])
+
+    # Acompanhamento institucional
+    acompanhado_instituicao = BooleanField('É Acompanhado por Outra Instituição?')
+    qual_instituicao = StringField('Se sim, qual(is)?',
+        validators=[Length(max=200, message='Máximo de 200 caracteres')])
+
+    # Benefícios
+    recebe_beneficio = BooleanField('Recebe Algum Benefício?')
+    qual_beneficio = StringField('Se sim, qual(is)?',
+        validators=[Length(max=200, message='Máximo de 200 caracteres')])
+
+    # Referência Familiar
+    possui_referencia_familiar = BooleanField('Possui Referência Familiar?')
+    grau_parentesco = StringField('Se sim, qual é o Grau de Parentesco?',
+        validators=[Length(max=100, message='Máximo de 100 caracteres')])
+
+    # Visitas Familiares
+    visita_familiar = BooleanField('Visita Algum Familiar com Frequência?')
+    frequencia_visitas = SelectField('Se sim, indique qual(is)?',
+        choices=[
+            ('', 'Selecione...'),
+            ('1_vez', '1 vez'),
+            ('2_3_vezes', '2 ou 3 vezes'),
+            ('mais_3', 'mais de 3 vezes')
+        ])
+
+    # Higiene
+    acesso_higiene = BooleanField('Tem Acesso à Higiene Pessoal?')
+    tipos_higiene = SelectField('Se sim, indique qual(is)?',
+        choices=[
+            ('', 'Selecione...'),
+            ('banho', 'Banho'),
+            ('sanitario', 'Acesso ao Sanitário'),
+            ('bucal', 'Higiene Bucal'),
+            ('outras', 'Outras')
+        ])
+
+    # Alimentação
+    quantidade_alimentacao = StringField('Quantas Vezes se Alimenta ao Dia?',
+        validators=[DataRequired(message='Informe a quantidade de alimentações diárias')])
+
+    origem_alimentacao = SelectField('Qual a Origem da Alimentação?',
+        choices=[
+            ('', 'Selecione...'),
+            ('restaurante_popular', 'Restaurante Popular'),
+            ('doacao_restaurante', 'Doação Restaurante'),
+            ('doacao_religiosa', 'Doação Grupo Religioso'),
+            ('doacao_popular', 'Doação de Popular'),
+            ('outras', 'Outras')
+        ],
+        validators=[DataRequired(message='Selecione a origem da alimentação')])
+
+    # Campos de control (readonly/disabled)
+    digitado_por = StringField('Digitado por')
+    data_digitacao = StringField('Data')
+    
+    # Actualizar el campo microarea para incluir FA
+    microarea = StringField('Microárea *', 
+        validators=[DataRequired(message='Microárea é obrigatória')])
+
+    # Agregar el campo de checkbox
+    fora_area = BooleanField('Fora de Área')
+
     def validate_nome_mae(self, field):
         if not self.mae_desconhecida.data and not field.data:
             raise ValidationError('Nome da mãe é obrigatório quando não for desconhecido')
@@ -377,4 +474,28 @@ class CadastroIndividualForm(FlaskForm):
 
     def validate_tipo_problema_rins(self, field):
         if self.tem_problema_rins.data and not field.data:
-            raise ValidationError('Selecione o tipo de problema nos rins') 
+            raise ValidationError('Selecione o tipo de problema nos rins')
+
+    def validate_tempo_rua(self, field):
+        if self.situacao_rua.data and not field.data:
+            raise ValidationError('Informe o tempo em situação de rua')
+
+    def validate_qual_instituicao(self, field):
+        if self.acompanhado_instituicao.data and not field.data:
+            raise ValidationError('Informe qual(is) instituição(ões)')
+
+    def validate_qual_beneficio(self, field):
+        if self.recebe_beneficio.data and not field.data:
+            raise ValidationError('Informe qual(is) benefício(s)')
+
+    def validate_grau_parentesco(self, field):
+        if self.possui_referencia_familiar.data and not field.data:
+            raise ValidationError('Informe o grau de parentesco')
+
+    def validate_frequencia_visitas(self, field):
+        if self.visita_familiar.data and not field.data:
+            raise ValidationError('Informe a frequência das visitas')
+
+    def validate_tipos_higiene(self, field):
+        if self.acesso_higiene.data and not field.data:
+            raise ValidationError('Selecione pelo menos um tipo de higiene') 

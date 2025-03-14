@@ -12,6 +12,12 @@ bp = Blueprint('cadastro', __name__)
 def novo_cadastro():
     form = CadastroIndividualForm()
     
+    # Pre-llenar campos
+    if request.method == 'GET':
+        form.digitado_por.data = current_user.nome_completo
+        form.data_digitacao.data = datetime.now().strftime('%d/%m/%Y')
+        form.microarea.data = current_user.microarea  # Prellenar con la microárea del ACS
+    
     # Pre-llenar datos del profesional desde el usuario logueado
     dados_profissional = {
         'cns_profissional': current_user.cns,
@@ -25,6 +31,10 @@ def novo_cadastro():
     if form.validate_on_submit():
         try:
             cadastro = CadastroIndividual()
+            cadastro.digitado_por = current_user.nome_completo
+            cadastro.data_digitacao = datetime.now()
+            # Si está marcado fora_area, usar 'FA', sino usar la microárea del ACS
+            cadastro.microarea = 'FA' if form.fora_area.data else current_user.microarea
             
             # Manejar campos de fecha
             if form.data_nascimento.data:
@@ -64,7 +74,6 @@ def novo_cadastro():
             cadastro.cbo = current_user.cbo
             cadastro.cnes = current_user.cnes
             cadastro.ine = current_user.ine
-            cadastro.microarea = current_user.microarea
             cadastro.data_cadastro = datetime.now()
             
             # Agregar campos del ciudadano
@@ -77,7 +86,9 @@ def novo_cadastro():
             # Agregar campos sociodemográficos
             cadastro.parentesco_responsavel = form.parentesco_responsavel.data
             cadastro.frequenta_escola = form.frequenta_escola.data
+            cadastro.curso_frequenta = form.curso_frequenta.data
             cadastro.situacao_trabalho = form.situacao_trabalho.data
+            cadastro.ocupacao = form.ocupacao.data
             cadastro.crianca_ficacom = form.crianca_ficacom.data
             cadastro.frequenta_cuidador = form.frequenta_cuidador.data
             cadastro.participa_grupo = form.participa_grupo.data
@@ -158,6 +169,40 @@ def novo_cadastro():
             
             # Outras Condições
             cadastro.outras_condicoes = form.outras_condicoes.data
+            
+            # Situação de Rua
+            cadastro.situacao_rua = form.situacao_rua.data
+            if form.situacao_rua.data:
+                cadastro.tempo_rua = form.tempo_rua.data
+            
+            # Acompanhamento institucional
+            cadastro.acompanhado_instituicao = form.acompanhado_instituicao.data
+            if form.acompanhado_instituicao.data:
+                cadastro.qual_instituicao = form.qual_instituicao.data
+            
+            # Benefícios
+            cadastro.recebe_beneficio = form.recebe_beneficio.data
+            if form.recebe_beneficio.data:
+                cadastro.qual_beneficio = form.qual_beneficio.data
+            
+            # Referência Familiar
+            cadastro.possui_referencia_familiar = form.possui_referencia_familiar.data
+            if form.possui_referencia_familiar.data:
+                cadastro.grau_parentesco = form.grau_parentesco.data
+            
+            # Visitas Familiares
+            cadastro.visita_familiar = form.visita_familiar.data
+            if form.visita_familiar.data:
+                cadastro.frequencia_visitas = form.frequencia_visitas.data
+            
+            # Higiene
+            cadastro.acesso_higiene = form.acesso_higiene.data
+            if form.acesso_higiene.data:
+                cadastro.tipos_higiene = form.tipos_higiene.data
+            
+            # Alimentação
+            cadastro.quantidade_alimentacao = form.quantidade_alimentacao.data
+            cadastro.origem_alimentacao = form.origem_alimentacao.data
             
             db.session.add(cadastro)
             db.session.commit()

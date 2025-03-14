@@ -46,7 +46,9 @@ class CadastroIndividual(db.Model):
     # Informações Sociodemográficas
     parentesco_responsavel = db.Column(db.String(20), nullable=False)  # Relação com responsável
     frequenta_escola = db.Column(db.Boolean, nullable=False)
+    curso_frequenta = db.Column(db.String(100))
     situacao_trabalho = db.Column(db.String(30), nullable=False)
+    ocupacao = db.Column(db.String(100))  # Nuevo campo
     crianca_ficacom = db.Column(db.String(20))  # Solo para niños de 0-9 años
     frequenta_cuidador = db.Column(db.Boolean, nullable=False)
     participa_grupo = db.Column(db.Boolean, nullable=False)
@@ -123,6 +125,38 @@ class CadastroIndividual(db.Model):
     
     # Outras Condições
     outras_condicoes = db.Column(db.String(300))  # Hasta 3 condiciones separadas por coma
+    
+    # Situação de Rua
+    situacao_rua = db.Column(db.Boolean, nullable=False)
+    tempo_rua = db.Column(db.String(20))  # Obligatorio si situacao_rua es True
+    
+    # Acompanhamento institucional
+    acompanhado_instituicao = db.Column(db.Boolean, nullable=False)
+    qual_instituicao = db.Column(db.String(200))  # Obligatorio si acompanhado_instituicao es True
+    
+    # Benefícios
+    recebe_beneficio = db.Column(db.Boolean, nullable=False)
+    qual_beneficio = db.Column(db.String(200))  # Obligatorio si recebe_beneficio es True
+    
+    # Referência Familiar
+    possui_referencia_familiar = db.Column(db.Boolean, nullable=False)
+    grau_parentesco = db.Column(db.String(100))  # Obligatorio si possui_referencia_familiar es True
+    
+    # Visitas Familiares
+    visita_familiar = db.Column(db.Boolean, nullable=False)
+    frequencia_visitas = db.Column(db.String(20))  # Obligatorio si visita_familiar es True
+    
+    # Higiene
+    acesso_higiene = db.Column(db.Boolean, nullable=False)
+    tipos_higiene = db.Column(db.String(100))  # Lista separada por comas si acesso_higiene es True
+    
+    # Alimentação
+    quantidade_alimentacao = db.Column(db.String(50), nullable=False)
+    origem_alimentacao = db.Column(db.String(200), nullable=False)  # Lista separada por comas
+    
+    # Campos de control
+    digitado_por = db.Column(db.String(100), nullable=False)  # Nombre del ACS
+    data_digitacao = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Fecha de digitación
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

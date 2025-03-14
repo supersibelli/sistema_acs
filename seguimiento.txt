@@ -223,3 +223,19 @@ git checkout v0.1.3
 📝 Próximo Paso:
 ---------------
 Implementar la sección "Situação de Rua"
+
+[14/03/2024] - Implementación del Formulario de Cadastro Individual:
+- Campos de control (Digitado por, Data) agregados y funcionando automáticamente
+- Opción "Fora de Área" implementada con checkbox
+- Microárea prellenada desde el login del ACS
+- Todos los campos del formulario PDF implementados
+
+Próximos pasos:
+1. Implementar Lista de Cadastros Individuais:
+   - Tabla con columnas: Nome, CNS/CPF, Data de Nascimento, Telefone, Ações
+   - Sistema de búsqueda/filtros
+   - Botones de acción (Ver, Editar, Excluir)
+2. Implementar edición de cadastros:
+   - Reutilizar el formulario existente
+   - Prellenar con datos del cadastro seleccionado
+   - Validar y guardar cambios
