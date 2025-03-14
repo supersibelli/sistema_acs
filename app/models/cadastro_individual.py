@@ -77,5 +77,52 @@ class CadastroIndividual(db.Model):
     tria_alimentos_acabaram = db.Column(db.Boolean, nullable=False)
     tria_comeu_alguns = db.Column(db.Boolean, nullable=False)
     
+    # Condições/Situações de Saúde
+    esta_gestante = db.Column(db.Boolean, nullable=False)
+    maternidade_referencia = db.Column(db.String(100))  # Obligatorio si esta_gestante es True
+    
+    consideracao_peso = db.Column(db.String(20), nullable=False)  # abaixo, adequado, acima
+    
+    # Doença Respiratória
+    tem_doenca_respiratoria = db.Column(db.Boolean, nullable=False)
+    tipo_doenca_respiratoria = db.Column(db.String(20))  # asma, dpoc, outra, nao_sabe
+    
+    # Hábitos
+    fumante = db.Column(db.Boolean, nullable=False)
+    uso_alcool = db.Column(db.Boolean, nullable=False)
+    uso_drogas = db.Column(db.Boolean, nullable=False)
+    
+    # Doenças Crônicas
+    hipertensao_arterial = db.Column(db.Boolean, nullable=False)
+    diabetes = db.Column(db.Boolean, nullable=False)
+    teve_avc = db.Column(db.Boolean, nullable=False)
+    teve_infarto = db.Column(db.Boolean, nullable=False)
+    
+    # Doença Cardíaca
+    tem_doenca_cardiaca = db.Column(db.Boolean, nullable=False)
+    tipo_doenca_cardiaca = db.Column(db.String(30))  # insuficiencia, outra, nao_sabe
+    
+    # Problemas Renais
+    tem_problema_rins = db.Column(db.Boolean, nullable=False)
+    tipo_problema_rins = db.Column(db.String(30))  # insuficiencia, outro, nao_sabe
+    
+    # Outras Doenças
+    hanseniase = db.Column(db.Boolean, nullable=False)
+    tuberculose = db.Column(db.Boolean, nullable=False)
+    cancer = db.Column(db.Boolean, nullable=False)
+    
+    # Situações de Saúde
+    internacao_12_meses = db.Column(db.Boolean, nullable=False)
+    problema_saude_mental = db.Column(db.Boolean, nullable=False)
+    acamado = db.Column(db.Boolean, nullable=False)
+    domiciliado = db.Column(db.Boolean, nullable=False)
+    
+    # Práticas Integrativas
+    usa_plantas_medicinais = db.Column(db.Boolean, nullable=False)
+    usa_praticas_integrativas = db.Column(db.Boolean, nullable=False)
+    
+    # Outras Condições
+    outras_condicoes = db.Column(db.String(300))  # Hasta 3 condiciones separadas por coma
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

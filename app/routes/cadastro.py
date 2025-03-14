@@ -112,6 +112,53 @@ def novo_cadastro():
             cadastro.tria_alimentos_acabaram = form.tria_alimentos_acabaram.data
             cadastro.tria_comeu_alguns = form.tria_comeu_alguns.data
             
+            # Condições/Situações de Saúde
+            cadastro.esta_gestante = form.esta_gestante.data
+            cadastro.maternidade_referencia = form.maternidade_referencia.data if form.esta_gestante.data else None
+            
+            cadastro.consideracao_peso = form.consideracao_peso.data
+            
+            # Doença Respiratória
+            cadastro.tem_doenca_respiratoria = form.tem_doenca_respiratoria.data
+            cadastro.tipo_doenca_respiratoria = form.tipo_doenca_respiratoria.data if form.tem_doenca_respiratoria.data else None
+            
+            # Hábitos
+            cadastro.fumante = form.fumante.data
+            cadastro.uso_alcool = form.uso_alcool.data
+            cadastro.uso_drogas = form.uso_drogas.data
+            
+            # Doenças Crônicas
+            cadastro.hipertensao_arterial = form.hipertensao_arterial.data
+            cadastro.diabetes = form.diabetes.data
+            cadastro.teve_avc = form.teve_avc.data
+            cadastro.teve_infarto = form.teve_infarto.data
+            
+            # Doença Cardíaca
+            cadastro.tem_doenca_cardiaca = form.tem_doenca_cardiaca.data
+            cadastro.tipo_doenca_cardiaca = form.tipo_doenca_cardiaca.data if form.tem_doenca_cardiaca.data else None
+            
+            # Problemas Renais
+            cadastro.tem_problema_rins = form.tem_problema_rins.data
+            cadastro.tipo_problema_rins = form.tipo_problema_rins.data if form.tem_problema_rins.data else None
+            
+            # Outras Doenças
+            cadastro.hanseniase = form.hanseniase.data
+            cadastro.tuberculose = form.tuberculose.data
+            cadastro.cancer = form.cancer.data
+            
+            # Situações de Saúde
+            cadastro.internacao_12_meses = form.internacao_12_meses.data
+            cadastro.problema_saude_mental = form.problema_saude_mental.data
+            cadastro.acamado = form.acamado.data
+            cadastro.domiciliado = form.domiciliado.data
+            
+            # Práticas Integrativas
+            cadastro.usa_plantas_medicinais = form.usa_plantas_medicinais.data
+            cadastro.usa_praticas_integrativas = form.usa_praticas_integrativas.data
+            
+            # Outras Condições
+            cadastro.outras_condicoes = form.outras_condicoes.data
+            
             db.session.add(cadastro)
             db.session.commit()
             flash('Cadastro realizado com sucesso!', 'success')

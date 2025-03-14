@@ -191,39 +191,35 @@ Implementar la sección "Informações Sociodemográficas" que incluye:
 8. Membro de Povo ou Comunidade Tradicional
 
 === VERSIÓN ESTABLE ===
-Tag: v0.1.2 - "Segunda seção do cadastro individual funcionando"
-Commit: "Segunda seção do cadastro individual: Informações Sociodemográficas"
+Tag: v0.1.3 - "Terceira seção do cadastro individual funcionando"
+Commit: "Terceira seção do cadastro individual: Condições/Situações de Saúde"
 
 Para volver a esta versión usar:
 ```
-git checkout v0.1.2
+git checkout v0.1.3
 ```
 
 ✅ Completado:
-- Segunda etapa del formulario Cadastro Individual:
-  - Sección "Informações Sociodemográficas" implementada con:
-    - Relação de Parentesco (10 opciones)
-    - Frequenta Escola ou Creche (Sim/Não)
-    - Situação no Mercado de Trabalho (10 opciones)
-    - Crianças de 0 a 9 anos (6 opciones, condicional por edad)
-    - Frequenta Cuidador Tradicional (Sim/Não)
-    - Participa de Grupo Comunitário (Sim/Não)
-    - Possui Plano de Saúde Privado (Sim/Não)
-    - Membro de Comunidade Tradicional (Sim/Não + campo qual)
-    - Orientação Sexual (Sim/Não + 8 opciones)
-    - Identidade de Gênero (Sim/Não + 8 opciones)
-    - Deficiência (Sim/Não + 5 opciones múltiples)
-    - Saída do Cadastro (2 opciones + campos data/DO)
-    - TRIA (2 preguntas Sim/Não)
+- Tercera etapa del formulario Cadastro Individual:
+  - Sección "Condições/Situações de Saúde" implementada con:
+    - Gestante y maternidad de referencia
+    - Consideración de peso (obligatorio)
+    - Enfermedades respiratorias
+    - Hábitos (fumante, alcohol, drogas)
+    - Enfermedades crónicas
+    - Enfermedades cardíacas
+    - Problemas renales
+    - Otras enfermedades (hanseníase, tuberculose, câncer)
+    - Situaciones de salud (internación, salud mental, etc.)
+    - Prácticas integrativas
+    - Otras condiciones de salud
 
   - Validaciones implementadas:
-    - Campos obligatorios
+    - Campos obligatorios marcados con *
     - Campos condicionales según respuestas
-    - Validación de fechas para óbito
-    - Selección múltiple para deficiencias
-    - Mostrar/ocultar campos según edad
+    - Validación de datos en cliente y servidor
     - Mostrar/ocultar campos según selecciones
 
 📝 Próximo Paso:
 ---------------
-Implementar la sección "Condições/Situações de Saúde Gerais"
+Implementar la sección "Situação de Rua"

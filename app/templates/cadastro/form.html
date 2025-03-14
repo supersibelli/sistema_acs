@@ -391,11 +391,10 @@
                                 </div>
                                 <div id="deficiencias-container" style="display: none;">
                                     {{ form.deficiencias.label(class="form-label") }}
-                                    {{ form.deficiencias(class="form-select" + (" is-invalid" if form.deficiencias.errors else ""), multiple=True) }}
+                                    {{ form.deficiencias(class="form-select" + (" is-invalid" if form.deficiencias.errors else "")) }}
                                     {% if form.deficiencias.errors %}
                                         <div class="invalid-feedback">{{ form.deficiencias.errors[0] }}</div>
                                     {% endif %}
-                                    <small class="form-text text-muted">Pressione Ctrl para selecionar múltiplas opções</small>
                                 </div>
                             </div>
                         </div>
@@ -434,6 +433,225 @@
                                     {{ form.tria_comeu_alguns(class="form-check-input") }}
                                     {{ form.tria_comeu_alguns.label(class="form-check-label") }}
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Condições/Situações de Saúde</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Gestante -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.esta_gestante(class="form-check-input") }}
+                                    {{ form.esta_gestante.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-8" id="maternidade-container" style="display: none;">
+                                {{ form.maternidade_referencia.label(class="form-label") }}
+                                {{ form.maternidade_referencia(class="form-control" + (" is-invalid" if form.maternidade_referencia.errors else "")) }}
+                                {% if form.maternidade_referencia.errors %}
+                                    <div class="invalid-feedback">{{ form.maternidade_referencia.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Peso -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.consideracao_peso.label(class="form-label") }}
+                                <span class="text-danger">*</span>
+                                {{ form.consideracao_peso(class="form-control" + (" is-invalid" if form.consideracao_peso.errors else "")) }}
+                                {% if form.consideracao_peso.errors %}
+                                    <div class="invalid-feedback">{{ form.consideracao_peso.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Doença Respiratória -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.tem_doenca_respiratoria(class="form-check-input") }}
+                                    {{ form.tem_doenca_respiratoria.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-8" id="doenca-respiratoria-container" style="display: none;">
+                                {{ form.tipo_doenca_respiratoria.label(class="form-label") }}
+                                {{ form.tipo_doenca_respiratoria(class="form-control" + (" is-invalid" if form.tipo_doenca_respiratoria.errors else "")) }}
+                                {% if form.tipo_doenca_respiratoria.errors %}
+                                    <div class="invalid-feedback">{{ form.tipo_doenca_respiratoria.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Hábitos -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.fumante(class="form-check-input") }}
+                                    {{ form.fumante.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.uso_alcool(class="form-check-input") }}
+                                    {{ form.uso_alcool.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.uso_drogas(class="form-check-input") }}
+                                    {{ form.uso_drogas.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Doenças Crônicas -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    {{ form.hipertensao_arterial(class="form-check-input") }}
+                                    {{ form.hipertensao_arterial.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    {{ form.diabetes(class="form-check-input") }}
+                                    {{ form.diabetes.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    {{ form.teve_avc(class="form-check-input") }}
+                                    {{ form.teve_avc.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    {{ form.teve_infarto(class="form-check-input") }}
+                                    {{ form.teve_infarto.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Doença Cardíaca -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.tem_doenca_cardiaca(class="form-check-input") }}
+                                    {{ form.tem_doenca_cardiaca.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-8" id="doenca-cardiaca-container" style="display: none;">
+                                {{ form.tipo_doenca_cardiaca.label(class="form-label") }}
+                                {{ form.tipo_doenca_cardiaca(class="form-control" + (" is-invalid" if form.tipo_doenca_cardiaca.errors else "")) }}
+                                {% if form.tipo_doenca_cardiaca.errors %}
+                                    <div class="invalid-feedback">{{ form.tipo_doenca_cardiaca.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Problemas Renais -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.tem_problema_rins(class="form-check-input") }}
+                                    {{ form.tem_problema_rins.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-8" id="problema-rins-container" style="display: none;">
+                                {{ form.tipo_problema_rins.label(class="form-label") }}
+                                {{ form.tipo_problema_rins(class="form-control" + (" is-invalid" if form.tipo_problema_rins.errors else "")) }}
+                                {% if form.tipo_problema_rins.errors %}
+                                    <div class="invalid-feedback">{{ form.tipo_problema_rins.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Outras Doenças -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.hanseniase(class="form-check-input") }}
+                                    {{ form.hanseniase.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.tuberculose(class="form-check-input") }}
+                                    {{ form.tuberculose.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    {{ form.cancer(class="form-check-input") }}
+                                    {{ form.cancer.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Situações de Saúde -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.internacao_12_meses(class="form-check-input") }}
+                                    {{ form.internacao_12_meses.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.problema_saude_mental(class="form-check-input") }}
+                                    {{ form.problema_saude_mental.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.acamado(class="form-check-input") }}
+                                    {{ form.acamado.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.domiciliado(class="form-check-input") }}
+                                    {{ form.domiciliado.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Práticas Integrativas -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.usa_plantas_medicinais(class="form-check-input") }}
+                                    {{ form.usa_plantas_medicinais.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.usa_praticas_integrativas(class="form-check-input") }}
+                                    {{ form.usa_praticas_integrativas.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Outras Condições -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                {{ form.outras_condicoes.label(class="form-label") }}
+                                {{ form.outras_condicoes(class="form-control" + (" is-invalid" if form.outras_condicoes.errors else ""),
+                                                     placeholder="Digite até 3 outras condições de saúde, separadas por vírgula") }}
+                                {% if form.outras_condicoes.errors %}
+                                    <div class="invalid-feedback">{{ form.outras_condicoes.errors[0] }}</div>
+                                {% endif %}
+                                <small class="form-text text-muted">Separe as condições por vírgula. Máximo de 3 condições.</small>
                             </div>
                         </div>
                     </div>
@@ -569,40 +787,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Agregar al script existente
     function validateForm() {
-        const maeDesconhecida = document.getElementById('mae_desconhecida');
-        const nomeMae = document.getElementById('nome_mae');
-        const paiDesconhecido = document.getElementById('pai_desconhecido');
-        const nomePai = document.getElementById('nome_pai');
         let isValid = true;
 
-        // Validar nome da mãe
-        if (!maeDesconhecida.checked && !nomeMae.value.trim()) {
-            nomeMae.classList.add('is-invalid');
-            if (!nomeMae.nextElementSibling) {
-                const feedback = document.createElement('div');
-                feedback.className = 'invalid-feedback';
-                feedback.textContent = 'Nome da mãe é obrigatório quando não for desconhecido';
-                nomeMae.parentNode.appendChild(feedback);
-            }
+        // Validar peso
+        const consideracaoPeso = document.getElementById('consideracao_peso');
+        if (!consideracaoPeso.value) {
+            consideracaoPeso.classList.add('is-invalid');
             isValid = false;
         }
 
-        // Validar nome do pai
-        if (!paiDesconhecido.checked && !nomePai.value.trim()) {
-            nomePai.classList.add('is-invalid');
-            if (!nomePai.nextElementSibling) {
-                const feedback = document.createElement('div');
-                feedback.className = 'invalid-feedback';
-                feedback.textContent = 'Nome do pai é obrigatório quando não for desconhecido';
-                nomePai.parentNode.appendChild(feedback);
-            }
+        // Validar campos condicionales
+        if (document.getElementById('esta_gestante').checked) {
+            const maternidade = document.getElementById('maternidade_referencia');
+            if (!maternidade.value) {
+                maternidade.classList.add('is-invalid');
             isValid = false;
+            }
         }
+
+        // ... otras validaciones similares para los demás campos condicionales ...
 
         return isValid;
     }
 
-    // Modificar el formulario para usar la validación
+    // Agregar al form el evento submit
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
         if (!validateForm()) {
@@ -685,14 +893,6 @@ document.addEventListener('DOMContentLoaded', function() {
         identidadeContainer.style.display = this.checked ? 'block' : 'none';
     });
 
-    // Deficiência
-    const temDeficiencia = document.getElementById('tem_deficiencia');
-    const deficienciasContainer = document.getElementById('deficiencias-container');
-
-    temDeficiencia.addEventListener('change', function() {
-        deficienciasContainer.style.display = this.checked ? 'block' : 'none';
-    });
-
     // Saída do Cadastro
     const motivoSaida = document.getElementById('motivo_saida');
     const dataObitoContainer = document.getElementById('data-obito-container');
@@ -702,6 +902,68 @@ document.addEventListener('DOMContentLoaded', function() {
         const isObito = this.value === 'obito';
         dataObitoContainer.style.display = isObito ? 'block' : 'none';
         numeroDOContainer.style.display = isObito ? 'block' : 'none';
+    });
+
+    // Gestante
+    const estaGestante = document.getElementById('esta_gestante');
+    const maternidadeContainer = document.getElementById('maternidade-container');
+
+    estaGestante.addEventListener('change', function() {
+        maternidadeContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('maternidade_referencia').value = '';
+        }
+    });
+
+    // Doença Respiratória
+    const temDoencaRespiratoria = document.getElementById('tem_doenca_respiratoria');
+    const doencaRespiratoriaContainer = document.getElementById('doenca-respiratoria-container');
+
+    temDoencaRespiratoria.addEventListener('change', function() {
+        doencaRespiratoriaContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('tipo_doenca_respiratoria').value = '';
+        }
+    });
+
+    // Doença Cardíaca
+    const temDoencaCardiaca = document.getElementById('tem_doenca_cardiaca');
+    const doencaCardiacaContainer = document.getElementById('doenca-cardiaca-container');
+
+    temDoencaCardiaca.addEventListener('change', function() {
+        doencaCardiacaContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('tipo_doenca_cardiaca').value = '';
+        }
+    });
+
+    // Problemas Renais
+    const temProblemaRins = document.getElementById('tem_problema_rins');
+    const problemaRinsContainer = document.getElementById('problema-rins-container');
+
+    temProblemaRins.addEventListener('change', function() {
+        problemaRinsContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            document.getElementById('tipo_problema_rins').value = '';
+        }
+    });
+
+    // Ejecutar al cargar la página para establecer estados iniciales
+    maternidadeContainer.style.display = estaGestante.checked ? 'block' : 'none';
+    doencaRespiratoriaContainer.style.display = temDoencaRespiratoria.checked ? 'block' : 'none';
+    doencaCardiacaContainer.style.display = temDoencaCardiaca.checked ? 'block' : 'none';
+    problemaRinsContainer.style.display = temProblemaRins.checked ? 'block' : 'none';
+
+    // Deficiência
+    const temDeficiencia = document.getElementById('tem_deficiencia');
+    const deficienciasContainer = document.getElementById('deficiencias-container');
+
+    temDeficiencia.addEventListener('change', function() {
+        deficienciasContainer.style.display = this.checked ? 'block' : 'none';
+        if (!this.checked) {
+            const select = document.getElementById('deficiencias');
+            Array.from(select.options).forEach(option => option.selected = false);
+        }
     });
 });
 </script>

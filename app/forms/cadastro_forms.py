@@ -196,8 +196,9 @@ class CadastroIndividualForm(FlaskForm):
 
     # Deficiência
     tem_deficiencia = BooleanField('Tem Alguma Deficiência?')
-    deficiencias = SelectMultipleField('Deficiências',
+    deficiencias = SelectField('Deficiências',
         choices=[
+            ('', 'Selecione...'),
             ('auditiva', 'Auditiva'),
             ('intelectual', 'Intelectual/Cognitiva'),
             ('visual', 'Visual'),
@@ -221,6 +222,80 @@ class CadastroIndividualForm(FlaskForm):
     # TRIA
     tria_alimentos_acabaram = BooleanField('Nos últimos três meses, os alimentos acabaram antes que você tivesse dinheiro para comprar mais comida?')
     tria_comeu_alguns = BooleanField('Nos últimos três meses, você comeu apenas alguns alimentos que ainda tinha, porque o dinheiro acabou?')
+
+    # Condições/Situações de Saúde
+    esta_gestante = BooleanField('Está Gestante?')
+    maternidade_referencia = StringField('Qual é a Maternidade de Referência?')
+
+    consideracao_peso = SelectField('Sobre seu peso, você se considera? *',
+        choices=[
+            ('', 'Selecione...'),
+            ('abaixo', 'Abaixo do Peso'),
+            ('adequado', 'Peso Adequado'),
+            ('acima', 'Acima do Peso')
+        ],
+        validators=[DataRequired(message='Por favor, selecione como considera seu peso')])
+
+    # Doença Respiratória
+    tem_doenca_respiratoria = BooleanField('Tem Doença Respiratória/No Pulmão?')
+    tipo_doenca_respiratoria = SelectField('Se sim, qual?',
+        choices=[
+            ('', 'Selecione...'),
+            ('asma', 'Asma'),
+            ('dpoc', 'DPOC/Enfisema'),
+            ('outra', 'Outra'),
+            ('nao_sabe', 'Não Sabe')
+        ])
+
+    # Hábitos
+    fumante = BooleanField('Está Fumante?')
+    uso_alcool = BooleanField('Faz Uso de Álcool?')
+    uso_drogas = BooleanField('Faz Uso de Outras Drogas?')
+
+    # Doenças Crônicas
+    hipertensao_arterial = BooleanField('Tem Hipertensão Arterial?')
+    diabetes = BooleanField('Tem Diabetes?')
+    teve_avc = BooleanField('Teve AVC/Derrame?')
+    teve_infarto = BooleanField('Teve Infarto?')
+
+    # Doença Cardíaca
+    tem_doenca_cardiaca = BooleanField('Tem Doença Cardíaca/Do Coração?')
+    tipo_doenca_cardiaca = SelectField('Se sim, qual?',
+        choices=[
+            ('', 'Selecione...'),
+            ('insuficiencia', 'Insuficiência Cardíaca'),
+            ('outra', 'Outra'),
+            ('nao_sabe', 'Não Sabe')
+        ])
+
+    # Problemas Renais
+    tem_problema_rins = BooleanField('Tem ou Teve Problemas nos Rins?')
+    tipo_problema_rins = SelectField('Se sim, qual?',
+        choices=[
+            ('', 'Selecione...'),
+            ('insuficiencia', 'Insuficiência Renal'),
+            ('outro', 'Outro'),
+            ('nao_sabe', 'Não Sabe')
+        ])
+
+    # Outras Doenças
+    hanseniase = BooleanField('Está com Hanseníase?')
+    tuberculose = BooleanField('Está com Tuberculose?')
+    cancer = BooleanField('Tem ou Teve Câncer?')
+
+    # Situações de Saúde
+    internacao_12_meses = BooleanField('Teve Alguma Internação nos Últimos 12 Meses?')
+    problema_saude_mental = BooleanField('Teve Diagnóstico de Algum Problema de Saúde Mental por Profissional de Saúde?')
+    acamado = BooleanField('Está Acamado?')
+    domiciliado = BooleanField('Está Domiciliado?')
+
+    # Práticas Integrativas
+    usa_plantas_medicinais = BooleanField('Usa Plantas Medicinais?')
+    usa_praticas_integrativas = BooleanField('Usa Outras Práticas Integrativas e Complementares?')
+
+    # Outras Condições (hasta 3)
+    outras_condicoes = StringField('Outras Condições de Saúde',
+        validators=[Optional(), Length(max=300, message='Máximo de 300 caracteres')])
 
     def validate_nome_mae(self, field):
         if not self.mae_desconhecida.data and not field.data:
@@ -286,4 +361,20 @@ class CadastroIndividualForm(FlaskForm):
 
     def validate_numero_do(self, field):
         if self.motivo_saida.data == 'obito' and not field.data:
-            raise ValidationError('Número da D.O. é obrigatório') 
+            raise ValidationError('Número da D.O. é obrigatório')
+
+    def validate_maternidade_referencia(self, field):
+        if self.esta_gestante.data and not field.data:
+            raise ValidationError('Informe a maternidade de referência')
+
+    def validate_tipo_doenca_respiratoria(self, field):
+        if self.tem_doenca_respiratoria.data and not field.data:
+            raise ValidationError('Selecione o tipo de doença respiratória')
+
+    def validate_tipo_doenca_cardiaca(self, field):
+        if self.tem_doenca_cardiaca.data and not field.data:
+            raise ValidationError('Selecione o tipo de doença cardíaca')
+
+    def validate_tipo_problema_rins(self, field):
+        if self.tem_problema_rins.data and not field.data:
+            raise ValidationError('Selecione o tipo de problema nos rins') 
