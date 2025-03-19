@@ -5,52 +5,85 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2>Lista de Cadastros Individuais</h2>
-            <a href="{{ url_for('cadastro.novo_cadastro') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Novo Cadastro
-            </a>
+            <a href="{{ url_for('cadastro.novo_cadastro') }}" class="btn btn-primary">Novo Cadastro</a>
         </div>
+        
+        <!-- Barra de búsqueda -->
+        <div class="card-body border-bottom">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" 
+                               id="searchInput" 
+                               class="form-control" 
+                               placeholder="Digite o nome ou CNS/CPF do cidadão..."
+                               autofocus>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="card-body">
-            {% if cadastros %}
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>CNS/CPF</th>
-                            <th>Data de Nascimento</th>
-                            <th>Telefone</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for cadastro in cadastros %}
-                        <tr>
-                            <td>{{ cadastro.nome_completo }}</td>
-                            <td>{{ cadastro.cns_cidadao or cadastro.cpf_cidadao }}</td>
-                            <td>{{ cadastro.data_nascimento.strftime('%d/%m/%Y') }}</td>
-                            <td>{{ cadastro.telefone_celular }}</td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% else %}
-            <div class="alert alert-info">
-                Nenhum cadastro encontrado.
-            </div>
-            {% endif %}
+            <table class="table" id="cadastrosTable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CNS/CPF</th>
+                        <th>Data de Nascimento</th>
+                        <th>Telefone</th>
+                        <th>Data Criação</th>
+                        <th>Última Atualização</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cadastro in cadastros %}
+                    <tr class="cadastro-row">
+                        <td>{{ cadastro.nome_completo }}</td>
+                        <td>{{ cadastro.cns_cidadao or cadastro.cpf_cidadao }}</td>
+                        <td>{{ cadastro.data_nascimento.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ cadastro.telefone_celular }}</td>
+                        <td>{{ cadastro.data_criacao.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>{{ cadastro.data_atualizacao.strftime('%d/%m/%Y %H:%M') if cadastro.data_atualizacao else 'Não atualizado' }}</td>
+                        <td>
+                            <a href="{{ url_for('cadastro.ver_cadastro', id=cadastro.id) }}" 
+                               class="btn btn-sm btn-info">Ver</a>
+                            <a href="{{ url_for('cadastro.editar_cadastro', id=cadastro.id) }}" 
+                               class="btn btn-sm btn-warning">Editar</a>
+                            <button onclick="confirmarExclusao({{ cadastro.id }})" 
+                                    class="btn btn-sm btn-danger">Excluir</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchText = this.value.toLowerCase();
+    const rows = document.getElementsByClassName('cadastro-row');
+    
+    Array.from(rows).forEach(row => {
+        const nome = row.cells[0].textContent.toLowerCase();
+        const documento = row.cells[1].textContent.toLowerCase();
+        
+        const matchesSearch = nome.includes(searchText) || 
+                            documento.includes(searchText);
+        
+        row.style.display = matchesSearch ? '' : 'none';
+    });
+});
+
+function confirmarExclusao(id) {
+    if (confirm('Tem certeza que deseja excluir este cadastro?')) {
+        window.location.href = "{{ url_for('cadastro.excluir_cadastro', id=0) }}".replace('0', id);
+    }
+}
+</script>
 {% endblock %} 

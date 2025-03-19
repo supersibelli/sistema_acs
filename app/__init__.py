@@ -4,10 +4,12 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 from config import Config
 import os
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 bootstrap = Bootstrap5()
+migrate = Migrate()
 login_manager.login_view = 'auth.login'
 
 @login_manager.user_loader
@@ -17,7 +19,19 @@ def load_user(id):
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+    
+    # Configuracion para PythonAnywhere
+    if 'PYTHONANYWHERE_SITE' in os.environ:
+        username = os.environ.get('PA_USERNAME')
+        password = os.environ.get('PA_PASSWORD')
+        dbname = os.environ.get('PA_DBNAME')
+        app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{username}:{password}@{username}.mysql.pythonanywhere-services.com/{username}${dbname}'
+    else:
+        # Tu configuración local actual
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+    
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Crear carpeta instance si no existe
     try:
@@ -29,6 +43,7 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     bootstrap.init_app(app)
+    migrate.init_app(app, db)
 
     # Registrar blueprints
     from app.routes import auth, main, cadastro

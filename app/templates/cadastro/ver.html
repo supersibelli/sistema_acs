@@ -1,0 +1,613 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>CADASTRO INDIVIDUAL</h2>
+            <div>
+                <button onclick="window.print()" class="btn btn-primary">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <a href="{{ url_for('cadastro.lista_cadastros') }}" class="btn btn-secondary no-print">Voltar</a>
+            </div>
+        </div>
+        
+        <div class="card-body printable-area">
+            <!-- Cabeçalho -->
+            <div class="header-section">
+                <div class="row">
+                    <div class="col-4">DIGITADO POR: {{ cadastro.digitado_por }}</div>
+                    <div class="col-4">DATA: {{ cadastro.data_digitacao.strftime('%d/%m/%Y') }}</div>
+                    <div class="col-4">FOLHA Nº: 1</div>
+                </div>
+            </div>
+
+            <!-- Identificação do Profissional -->
+            <div class="form-section">
+                <div class="row">
+                    <div class="col-3">CNS DO PROFISSIONAL: {{ cadastro.cns_profissional }}</div>
+                    <div class="col-3">CBO: {{ cadastro.cbo }}</div>
+                    <div class="col-3">CNES: {{ cadastro.cnes }}</div>
+                    <div class="col-3">INE: {{ cadastro.ine }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3">MICROÁREA: {{ cadastro.microarea }}</div>
+                    <div class="col-3">DATA: {{ cadastro.data_cadastro.strftime('%d/%m/%Y') }}</div>
+                </div>
+            </div>
+
+            <!-- Identificação do Usuário/Cidadão -->
+            <div class="form-section">
+                <h5>IDENTIFICAÇÃO DO USUÁRIO/CIDADÃO</h5>
+                <div class="row">
+                    <div class="col-12">CNS OU CPF DO CIDADÃO*</div>
+                    <div class="col-6">CNS: {{ cadastro.cns_cidadao or '—' }}</div>
+                    <div class="col-6">CPF: {{ cadastro.cpf_cidadao or '—' }}</div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-12">
+                        RESPONSÁVEL FAMILIAR? {{ "Sim" if cadastro.responsavel_familiar else "Não" }}
+                    </div>
+                    {% if not cadastro.responsavel_familiar %}
+                    <div class="col-6">CNS RESPONSÁVEL: {{ cadastro.cns_responsavel or '—' }}</div>
+                    <div class="col-6">CPF RESPONSÁVEL: {{ cadastro.cpf_responsavel or '—' }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">NOME COMPLETO: {{ cadastro.nome_completo }}</div>
+                    <div class="col-12">NOME SOCIAL: {{ cadastro.nome_social or '—' }}</div>
+                </div>
+
+                <!-- Datos personales adicionales -->
+                <div class="row mt-3">
+                    <div class="col-4">DATA DE NASCIMENTO: {{ cadastro.data_nascimento.strftime('%d/%m/%Y') }}</div>
+                    <div class="col-4">SEXO: {{ cadastro.sexo }}</div>
+                    <div class="col-4">RAÇA/COR: {{ cadastro.raca_cor }}</div>
+                </div>
+
+                {% if cadastro.raca_cor == 'indigena' %}
+                <div class="row mt-2">
+                    <div class="col-12">ETNIA: {{ cadastro.etnia }}</div>
+                </div>
+                {% endif %}
+
+                <div class="row mt-3">
+                    <div class="col-12">Nº NIS (PIS/PASEP): {{ cadastro.numero_nis or '—' }}</div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        NOME COMPLETO DA MÃE: 
+                        {% if cadastro.mae_desconhecida %}
+                            DESCONHECIDO
+                        {% else %}
+                            {{ cadastro.nome_mae or '—' }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        NOME COMPLETO DO PAI: 
+                        {% if cadastro.pai_desconhecido %}
+                            DESCONHECIDO
+                        {% else %}
+                            {{ cadastro.nome_pai or '—' }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Nacionalidade -->
+                <div class="row mt-3">
+                    <div class="col-4">NACIONALIDADE: {{ cadastro.nacionalidade }}</div>
+                    {% if cadastro.nacionalidade != 'brasileira' %}
+                        <div class="col-4">PAÍS DE NASCIMENTO: {{ cadastro.pais_nascimento }}</div>
+                        {% if cadastro.nacionalidade == 'naturalizado' %}
+                            <div class="col-4">
+                                DATA DE NATURALIZAÇÃO: 
+                                {{ cadastro.data_naturalizacao.strftime('%d/%m/%Y') if cadastro.data_naturalizacao else '—' }}
+                            </div>
+                            <div class="col-12 mt-2">
+                                PORTARIA DE NATURALIZAÇÃO: {{ cadastro.portaria_naturalizacao or '—' }}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="col-4">MUNICÍPIO DE NASCIMENTO: {{ cadastro.municipio_nascimento }}</div>
+                        <div class="col-4">UF: {{ cadastro.uf_nascimento }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-6">TELEFONE: {{ cadastro.telefone_celular or '—' }}</div>
+                    <div class="col-6">EMAIL: {{ cadastro.email or '—' }}</div>
+                </div>
+            </div>
+
+            <!-- Informações Sociodemográficas -->
+            <div class="form-section">
+                <h5>INFORMAÇÕES SOCIODEMOGRÁFICAS</h5>
+                
+                <div class="row">
+                    <div class="col-12">
+                        RELAÇÃO DE PARENTESCO COM O RESPONSÁVEL FAMILIAR: {{ cadastro.parentesco_responsavel }}
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        FREQUENTA ESCOLA OU CRECHE? {{ "Sim" if cadastro.frequenta_escola else "Não" }}
+                        {% if cadastro.frequenta_escola %}
+                            <br>CURSO: {{ cadastro.curso_frequenta }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        SITUAÇÃO NO MERCADO DE TRABALHO: {{ cadastro.situacao_trabalho }}
+                        {% if cadastro.ocupacao %}
+                            <br>OCUPAÇÃO: {{ cadastro.ocupacao }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Campos booleanos -->
+                <div class="row mt-3">
+                    <div class="col-6">FREQUENTA CUIDADOR TRADICIONAL? {{ "Sim" if cadastro.frequenta_cuidador else "Não" }}</div>
+                    <div class="col-6">PARTICIPA DE GRUPO COMUNITÁRIO? {{ "Sim" if cadastro.participa_grupo else "Não" }}</div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12">POSSUI PLANO DE SAÚDE PRIVADO? {{ "Sim" if cadastro.possui_plano_saude else "Não" }}</div>
+                </div>
+            </div>
+
+            <!-- Condições/Situações de Saúde -->
+            <div class="form-section">
+                <h5>CONDIÇÕES/SITUAÇÕES DE SAÚDE</h5>
+                
+                <!-- Gestante -->
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.esta_gestante else '' }}">☐</span>
+                        ESTÁ GESTANTE?
+                    </div>
+                    {% if cadastro.esta_gestante %}
+                    <div class="indent">
+                        MATERNIDADE DE REFERÊNCIA: {{ cadastro.maternidade_referencia }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Peso -->
+                <div class="checkbox-group">
+                    <div>SOBRE SEU PESO, VOCÊ SE CONSIDERA?</div>
+                    <div class="checkbox-item indent">
+                        <span class="checkbox {{ 'checked' if cadastro.consideracao_peso == 'abaixo' else '' }}">☐</span>
+                        ABAIXO DO PESO
+                    </div>
+                    <div class="checkbox-item indent">
+                        <span class="checkbox {{ 'checked' if cadastro.consideracao_peso == 'adequado' else '' }}">☐</span>
+                        PESO ADEQUADO
+                    </div>
+                    <div class="checkbox-item indent">
+                        <span class="checkbox {{ 'checked' if cadastro.consideracao_peso == 'acima' else '' }}">☐</span>
+                        ACIMA DO PESO
+                    </div>
+                </div>
+
+                <!-- Doença Respiratória -->
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.tem_doenca_respiratoria else '' }}">☐</span>
+                        TEM DOENÇA RESPIRATÓRIA/NO PULMÃO?
+                    </div>
+                    {% if cadastro.tem_doenca_respiratoria %}
+                    <div class="indent">
+                        SE SIM, QUAL?
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_doenca_respiratoria == 'asma' else '' }}">☐</span>
+                            ASMA
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_doenca_respiratoria == 'dpoc' else '' }}">☐</span>
+                            DPOC/ENFISEMA
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_doenca_respiratoria == 'outra' else '' }}">☐</span>
+                            OUTRA
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_doenca_respiratoria == 'nao_sabe' else '' }}">☐</span>
+                            NÃO SABE
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Doenças -->
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.hipertensao_arterial else '' }}">☐</span>
+                        TEM HIPERTENSÃO ARTERIAL?
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.diabetes else '' }}">☐</span>
+                        TEM DIABETES?
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.teve_avc else '' }}">☐</span>
+                        TEVE AVC/DERRAME?
+                    </div>
+                </div>
+
+                <!-- Después de la sección de Doenças -->
+
+                <!-- Hábitos -->
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.fumante else '' }}">☐</span>
+                        ESTÁ FUMANTE?
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.uso_alcool else '' }}">☐</span>
+                        FAZ USO DE ÁLCOOL?
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.uso_drogas else '' }}">☐</span>
+                        FAZ USO DE OUTRAS DROGAS?
+                    </div>
+                </div>
+
+                <!-- Doença Cardíaca -->
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.tem_doenca_cardiaca else '' }}">☐</span>
+                        TEM DOENÇA CARDÍACA/DO CORAÇÃO?
+                    </div>
+                    {% if cadastro.tem_doenca_cardiaca %}
+                    <div class="indent">
+                        SE SIM, QUAL?
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_doenca_cardiaca == 'insuficiencia' else '' }}">☐</span>
+                            INSUFICIÊNCIA CARDÍACA
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_doenca_cardiaca == 'outra' else '' }}">☐</span>
+                            OUTRA
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_doenca_cardiaca == 'nao_sabe' else '' }}">☐</span>
+                            NÃO SABE
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Después de Doença Cardíaca -->
+
+                <!-- Problemas Renais -->
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.tem_problema_rins else '' }}">☐</span>
+                        TEM OU TEVE PROBLEMAS NOS RINS?
+                    </div>
+                    {% if cadastro.tem_problema_rins %}
+                    <div class="indent">
+                        SE SIM, QUAL?
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_problema_rins == 'insuficiencia' else '' }}">☐</span>
+                            INSUFICIÊNCIA RENAL
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_problema_rins == 'outro' else '' }}">☐</span>
+                            OUTRO
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tipo_problema_rins == 'nao_sabe' else '' }}">☐</span>
+                            NÃO SABE
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Outras Doenças -->
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.hanseniase else '' }}">☐</span>
+                        ESTÁ COM HANSENÍASE?
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.tuberculose else '' }}">☐</span>
+                        ESTÁ COM TUBERCULOSE?
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.cancer else '' }}">☐</span>
+                        TEM OU TEVE CÂNCER?
+                    </div>
+                </div>
+            </div>
+
+            <!-- Situações de Saúde -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.internacao_12_meses else '' }}">☐</span>
+                    TEVE ALGUMA INTERNAÇÃO NOS ÚLTIMOS 12 MESES?
+                </div>
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.problema_saude_mental else '' }}">☐</span>
+                    TEVE DIAGNÓSTICO DE ALGUM PROBLEMA DE SAÚDE MENTAL POR PROFISSIONAL DE SAÚDE?
+                </div>
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.acamado else '' }}">☐</span>
+                    ESTÁ ACAMADO?
+                </div>
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.domiciliado else '' }}">☐</span>
+                    ESTÁ DOMICILIADO?
+                </div>
+            </div>
+
+            <!-- Práticas Integrativas -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.usa_plantas_medicinais else '' }}">☐</span>
+                    USA PLANTAS MEDICINAIS?
+                </div>
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.usa_praticas_integrativas else '' }}">☐</span>
+                    USA OUTRAS PRÁTICAS INTEGRATIVAS E COMPLEMENTARES?
+                </div>
+            </div>
+
+            <!-- Situação de Rua -->
+            <div class="form-section">
+                <h5>CIDADÃO EM SITUAÇÃO DE RUA</h5>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.situacao_rua else '' }}">☐</span>
+                        ESTÁ EM SITUAÇÃO DE RUA?
+                    </div>
+                    
+                    {% if cadastro.situacao_rua %}
+                    <div class="indent">
+                        <div>TEMPO EM SITUAÇÃO DE RUA:</div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tempo_rua == 'menos_6' else '' }}">☐</span>
+                            < 6 MESES
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tempo_rua == '6_12' else '' }}">☐</span>
+                            6 A 12 MESES
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tempo_rua == '1_5' else '' }}">☐</span>
+                            1 A 5 ANOS
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.tempo_rua == 'mais_5' else '' }}">☐</span>
+                            > 5 ANOS
+                        </div>
+                    </div>
+
+                    <!-- Alimentação -->
+                    <div class="indent">
+                        <div>QUANTAS VEZES SE ALIMENTA AO DIA?</div>
+                        <div class="checkbox-item">{{ cadastro.quantidade_alimentacao }}</div>
+                        
+                        <div>QUAL A ORIGEM DA ALIMENTAÇÃO?</div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if 'restaurante_popular' in cadastro.origem_alimentacao else '' }}">☐</span>
+                            RESTAURANTE POPULAR
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if 'doacao_restaurante' in cadastro.origem_alimentacao else '' }}">☐</span>
+                            DOAÇÃO RESTAURANTE
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if 'doacao_religiosa' in cadastro.origem_alimentacao else '' }}">☐</span>
+                            DOAÇÃO GRUPO RELIGIOSO
+                        </div>
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if 'doacao_popular' in cadastro.origem_alimentacao else '' }}">☐</span>
+                            DOAÇÃO DE POPULAR
+                        </div>
+                    </div>
+
+                    <!-- Higiene e Acompanhamento -->
+                    <div class="indent">
+                        <div class="checkbox-item">
+                            <span class="checkbox {{ 'checked' if cadastro.acesso_higiene else '' }}">☐</span>
+                            TEM ACESSO À HIGIENE PESSOAL?
+                        </div>
+                        {% if cadastro.acesso_higiene %}
+                        <div class="indent">
+                            <div>QUAIS?</div>
+                            <div class="checkbox-item">
+                                <span class="checkbox {{ 'checked' if 'banho' in cadastro.tipos_higiene else '' }}">☐</span>
+                                BANHO
+                            </div>
+                            <div class="checkbox-item">
+                                <span class="checkbox {{ 'checked' if 'sanitario' in cadastro.tipos_higiene else '' }}">☐</span>
+                                ACESSO AO SANITÁRIO
+                            </div>
+                            <div class="checkbox-item">
+                                <span class="checkbox {{ 'checked' if 'bucal' in cadastro.tipos_higiene else '' }}">☐</span>
+                                HIGIENE BUCAL
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Después de la sección de Higiene -->
+
+            <!-- Acompanhamento Institucional -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.acompanhado_instituicao else '' }}">☐</span>
+                    É ACOMPANHADO POR OUTRA INSTITUIÇÃO?
+                </div>
+                {% if cadastro.acompanhado_instituicao %}
+                <div class="indent">
+                    <div>SE SIM, QUAL(IS)?</div>
+                    <div class="checkbox-item">{{ cadastro.qual_instituicao }}</div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Benefícios -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.recebe_beneficio else '' }}">☐</span>
+                    RECEBE ALGUM BENEFÍCIO?
+                </div>
+                {% if cadastro.recebe_beneficio %}
+                <div class="indent">
+                    <div>SE SIM, QUAL(IS)?</div>
+                    <div class="checkbox-item">{{ cadastro.qual_beneficio }}</div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Referência Familiar -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.possui_referencia_familiar else '' }}">☐</span>
+                    POSSUI REFERÊNCIA FAMILIAR?
+                </div>
+                {% if cadastro.possui_referencia_familiar %}
+                <div class="indent">
+                    <div>SE SIM, QUAL É O GRAU DE PARENTESCO?</div>
+                    <div class="checkbox-item">{{ cadastro.grau_parentesco }}</div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Visitas Familiares -->
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <span class="checkbox {{ 'checked' if cadastro.visita_familiar else '' }}">☐</span>
+                    VISITA ALGUM FAMILIAR COM FREQUÊNCIA?
+                </div>
+                {% if cadastro.visita_familiar %}
+                <div class="indent">
+                    <div>SE SIM, QUAL A FREQUÊNCIA?</div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.frequencia_visitas == '1_vez' else '' }}">☐</span>
+                        1 VEZ
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.frequencia_visitas == '2_3_vezes' else '' }}">☐</span>
+                        2 OU 3 VEZES
+                    </div>
+                    <div class="checkbox-item">
+                        <span class="checkbox {{ 'checked' if cadastro.frequencia_visitas == 'mais_3' else '' }}">☐</span>
+                        MAIS DE 3 VEZES
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Rodapé -->
+            <div class="footer-print">
+                <div class="row mt-5 pt-5">
+                    <div class="col-4">
+                        <div>DATA: {{ cadastro.data_cadastro.strftime('%d/%m/%Y') }}</div>
+                    </div>
+                    <div class="col-8">
+                        <div class="signature-line">
+                            <div>ASSINATURA DO PROFISSIONAL:</div>
+                            <div class="signature-box">_________________________________</div>
+                            <div class="signature-name">{{ cadastro.digitado_por }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Estilos para que se vea como formulario e-SUS */
+.printable-area {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+.form-section {
+    border: 1px solid #000;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.form-section h5 {
+    background-color: #f0f0f0;
+    padding: 5px;
+    margin: -10px -10px 10px -10px;
+    border-bottom: 1px solid #000;
+}
+
+/* Estilos específicos para impresión */
+@media print {
+    @page {
+        size: A4;
+        margin: 0.5cm;
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+    .no-print {
+        display: none;
+    }
+
+    .form-section {
+        break-inside: avoid;
+    }
+}
+
+/* Estilos para que se vea como el formulario real */
+.checkbox-group {
+    margin: 10px 0;
+}
+
+.checkbox-item {
+    margin: 5px 0;
+}
+
+.checkbox {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #000;
+    margin-right: 5px;
+    text-align: center;
+    line-height: 15px;
+}
+
+.checkbox.checked::before {
+    content: "✓";
+}
+
+.indent {
+    margin-left: 25px;
+}
+
+@media print {
+    /* ... otros estilos de impresión ... */
+    
+    .checkbox {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+</style>
+{% endblock %} 

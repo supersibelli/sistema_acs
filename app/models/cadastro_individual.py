@@ -33,7 +33,7 @@ class CadastroIndividual(db.Model):
     cbo = db.Column(db.String(6), nullable=False)
     cnes = db.Column(db.String(7), nullable=False)
     ine = db.Column(db.String(10), nullable=False)
-    microarea = db.Column(db.String(2), nullable=False)
+    microarea = db.Column(db.String(10), nullable=False)
     data_cadastro = db.Column(db.DateTime, nullable=False)
     
     # Campos de identificación del ciudadano
@@ -67,8 +67,8 @@ class CadastroIndividual(db.Model):
     identidade_genero = db.Column(db.String(20))  # Obligatorio si informa_identidade es True
     
     # Deficiência
-    tem_deficiencia = db.Column(db.Boolean, nullable=False)
-    deficiencias = db.Column(db.String(100))  # Lista separada por comas si tem_deficiencia es True
+    tem_deficiencia = db.Column(db.Boolean, default=False)
+    deficiencias = db.Column(db.String(500))  # Cambiado de 100 a 500 para permitir más opciones
     
     # Saída do Cadastro
     motivo_saida = db.Column(db.String(20))
@@ -147,16 +147,17 @@ class CadastroIndividual(db.Model):
     frequencia_visitas = db.Column(db.String(20))  # Obligatorio si visita_familiar es True
     
     # Higiene
-    acesso_higiene = db.Column(db.Boolean, nullable=False)
-    tipos_higiene = db.Column(db.String(100))  # Lista separada por comas si acesso_higiene es True
+    acesso_higiene = db.Column(db.Boolean, default=False)
+    tipos_higiene = db.Column(db.String(500))  # Cambiado de 100 a 500 para permitir más opciones
     
     # Alimentação
     quantidade_alimentacao = db.Column(db.String(50), nullable=False)
     origem_alimentacao = db.Column(db.String(200), nullable=False)  # Lista separada por comas
     
     # Campos de control
-    digitado_por = db.Column(db.String(100), nullable=False)  # Nombre del ACS
-    data_digitacao = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Fecha de digitación
+    digitado_por = db.Column(db.String(100), nullable=False)
+    data_digitacao = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 
+    # Nuevos campos de timestamp
+    data_criacao = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

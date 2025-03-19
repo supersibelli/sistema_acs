@@ -2,6 +2,15 @@
 
 {% block content %}
 <div class="container mt-4">
+    <!-- Agregar esto para mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
     <div class="card">
         <div class="card-header">
             <h2>Cadastro Individual</h2>
@@ -182,54 +191,30 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 {{ form.nacionalidade.label(class="form-label") }}
-                                {{ form.nacionalidade(class="form-control") }}
+                                {{ form.nacionalidade(class="form-select", id="nacionalidade") }}
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-4 mb-3 campo-estrangeiro campo-naturalizado">
                                 {{ form.pais_nascimento.label(class="form-label") }}
                                 {{ form.pais_nascimento(class="form-control") }}
                             </div>
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-4 mb-3 campo-naturalizado">
                                 {{ form.data_naturalizacao.label(class="form-label") }}
-                                {{ form.data_naturalizacao(class="form-control" + (" is-invalid" if form.data_naturalizacao.errors else ""),
-                                                       placeholder="DD/MM/AAAA",
-                                                       maxlength="10") }}
-                                <small class="form-text text-muted">Formato: DD/MM/AAAA</small>
-                                {% if form.data_naturalizacao.errors %}
-                                    <div class="invalid-feedback">
-                                        {{ form.data_naturalizacao.errors[0] }}
-                                    </div>
-                                {% endif %}
+                                {{ form.data_naturalizacao(class="form-control") }}
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-4 mb-3 campo-naturalizado">
                                 {{ form.portaria_naturalizacao.label(class="form-label") }}
                                 {{ form.portaria_naturalizacao(class="form-control") }}
                             </div>
-                            <div class="col-md-4 mb-3">
-                                {{ form.municipio_nascimento.label(class="form-label") }}
-                                {{ form.municipio_nascimento(class="form-control") }}
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                {{ form.uf_nascimento.label(class="form-label") }}
-                                {{ form.uf_nascimento(class="form-control") }}
+                            <div class="col-md-4 mb-3 campo-estrangeiro">
+                                {{ form.data_entrada_brasil.label(class="form-label") }}
+                                {{ form.data_entrada_brasil(class="form-control") }}
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 mb-3">
-                                {{ form.data_entrada_brasil.label(class="form-label") }}
-                                {{ form.data_entrada_brasil(class="form-control" + (" is-invalid" if form.data_entrada_brasil.errors else ""),
-                                                       placeholder="DD/MM/AAAA",
-                                                       maxlength="10") }}
-                                <small class="form-text text-muted">Formato: DD/MM/AAAA</small>
-                                {% if form.data_entrada_brasil.errors %}
-                                    <div class="invalid-feedback">
-                                        {{ form.data_entrada_brasil.errors[0] }}
-                                    </div>
-                                {% endif %}
-                            </div>
                             <div class="col-md-4 mb-3">
                                 {{ form.telefone_celular.label(class="form-label") }}
                                 {{ form.telefone_celular(class="form-control") }}
@@ -371,70 +356,46 @@
                         </div>
 
                         <!-- Comunidade Tradicional -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.membro_comunidade(class="form-check-input") }}
-                                    {{ form.membro_comunidade.label(class="form-check-label") }}
-                                </div>
-                                <div id="qual-comunidade-container" style="display: none;">
+                        <div class="form-group">
+                            {{ form.membro_comunidade.label(class="form-label") }}
+                            {{ form.membro_comunidade(class="form-check-input", id="membro_comunidade") }}
+                            
+                            <div id="qual_comunidade_div" style="display: none;">
                                     {{ form.qual_comunidade.label(class="form-label") }}
-                                    {{ form.qual_comunidade(class="form-control" + (" is-invalid" if form.qual_comunidade.errors else "")) }}
-                                    {% if form.qual_comunidade.errors %}
-                                        <div class="invalid-feedback">{{ form.qual_comunidade.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                                {{ form.qual_comunidade(class="form-control") }}
                             </div>
                         </div>
 
                         <!-- Orientação Sexual -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.informa_orientacao(class="form-check-input") }}
-                                    {{ form.informa_orientacao.label(class="form-check-label") }}
-                                </div>
-                                <div id="orientacao-container" style="display: none;">
+                        <div class="form-group">
+                            {{ form.informa_orientacao.label(class="form-label") }}
+                            {{ form.informa_orientacao(class="form-check-input", id="informa_orientacao") }}
+                            
+                            <div id="orientacao_sexual_div" style="display: none;">
                                     {{ form.orientacao_sexual.label(class="form-label") }}
-                                    {{ form.orientacao_sexual(class="form-control" + (" is-invalid" if form.orientacao_sexual.errors else "")) }}
-                                    {% if form.orientacao_sexual.errors %}
-                                        <div class="invalid-feedback">{{ form.orientacao_sexual.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                                {{ form.orientacao_sexual(class="form-control") }}
                             </div>
                         </div>
 
                         <!-- Identidade de Gênero -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.informa_identidade(class="form-check-input") }}
-                                    {{ form.informa_identidade.label(class="form-check-label") }}
-                                </div>
-                                <div id="identidade-container" style="display: none;">
+                        <div class="form-group">
+                            {{ form.informa_identidade.label(class="form-label") }}
+                            {{ form.informa_identidade(class="form-check-input", id="informa_identidade") }}
+                            
+                            <div id="identidade_genero_div" style="display: none;">
                                     {{ form.identidade_genero.label(class="form-label") }}
-                                    {{ form.identidade_genero(class="form-control" + (" is-invalid" if form.identidade_genero.errors else "")) }}
-                                    {% if form.identidade_genero.errors %}
-                                        <div class="invalid-feedback">{{ form.identidade_genero.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                                {{ form.identidade_genero(class="form-control") }}
                             </div>
                         </div>
 
                         <!-- Deficiência -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.tem_deficiencia(class="form-check-input") }}
-                                    {{ form.tem_deficiencia.label(class="form-check-label") }}
-                                </div>
-                                <div id="deficiencias-container" style="display: none;">
+                        <div class="form-group">
+                            {{ form.tem_deficiencia.label(class="form-label") }}
+                            {{ form.tem_deficiencia(class="form-check-input", id="tem_deficiencia") }}
+                            
+                            <div id="deficiencias_div" style="display: none;">
                                     {{ form.deficiencias.label(class="form-label") }}
-                                    {{ form.deficiencias(class="form-select" + (" is-invalid" if form.deficiencias.errors else "")) }}
-                                    {% if form.deficiencias.errors %}
-                                        <div class="invalid-feedback">{{ form.deficiencias.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                                {{ form.deficiencias(class="form-select") }}
                             </div>
                         </div>
 
@@ -735,70 +696,47 @@
                             </div>
                         </div>
 
-                        <!-- Benefícios -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.recebe_beneficio(class="form-check-input") }}
-                                    {{ form.recebe_beneficio.label(class="form-check-label") }}
-                                </div>
-                                <div id="beneficio-container" style="display: none;">
+                        <!-- Benefício -->
+                        <div class="form-group">
+                            {{ form.recebe_beneficio.label(class="form-label") }}
+                            {{ form.recebe_beneficio(class="form-check-input", id="recebe_beneficio") }}
+                            
+                            <div id="beneficio_div" style="display: none;">
                                     {{ form.qual_beneficio.label(class="form-label") }}
-                                    {{ form.qual_beneficio(class="form-control" + (" is-invalid" if form.qual_beneficio.errors else "")) }}
-                                    {% if form.qual_beneficio.errors %}
-                                        <div class="invalid-feedback">{{ form.qual_beneficio.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                                {{ form.qual_beneficio(class="form-control") }}
                             </div>
                         </div>
 
                         <!-- Referência Familiar -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.possui_referencia_familiar(class="form-check-input") }}
-                                    {{ form.possui_referencia_familiar.label(class="form-check-label") }}
-                                </div>
-                                <div id="referencia-familiar-container" style="display: none;">
+                        <div class="form-group">
+                            {{ form.possui_referencia_familiar.label(class="form-label") }}
+                            {{ form.possui_referencia_familiar(class="form-check-input", id="possui_referencia_familiar") }}
+                            
+                            <div id="parentesco_div" style="display: none;">
                                     {{ form.grau_parentesco.label(class="form-label") }}
-                                    {{ form.grau_parentesco(class="form-control" + (" is-invalid" if form.grau_parentesco.errors else "")) }}
-                                    {% if form.grau_parentesco.errors %}
-                                        <div class="invalid-feedback">{{ form.grau_parentesco.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                                {{ form.grau_parentesco(class="form-control") }}
                             </div>
                         </div>
 
-                        <!-- Visitas Familiares -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.visita_familiar(class="form-check-input") }}
-                                    {{ form.visita_familiar.label(class="form-check-label") }}
-                                </div>
-                                <div id="visita-familiar-container" style="display: none;">
+                        <!-- Visita Familiar -->
+                        <div class="form-group">
+                            {{ form.visita_familiar.label(class="form-label") }}
+                            {{ form.visita_familiar(class="form-check-input", id="visita_familiar") }}
+                            
+                            <div id="frequencia_div" style="display: none;">
                                     {{ form.frequencia_visitas.label(class="form-label") }}
-                                    {{ form.frequencia_visitas(class="form-select" + (" is-invalid" if form.frequencia_visitas.errors else "")) }}
-                                    {% if form.frequencia_visitas.errors %}
-                                        <div class="invalid-feedback">{{ form.frequencia_visitas.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                                {{ form.frequencia_visitas(class="form-control") }}
                             </div>
                         </div>
 
                         <!-- Higiene -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check mb-2">
-                                    {{ form.acesso_higiene(class="form-check-input") }}
-                                    {{ form.acesso_higiene.label(class="form-check-label") }}
-                                </div>
-                                <div id="higiene-container" style="display: none;">
-                                    {{ form.tipos_higiene(class="form-select" + (" is-invalid" if form.tipos_higiene.errors else "")) }}
-                                    {% if form.tipos_higiene.errors %}
-                                        <div class="invalid-feedback">{{ form.tipos_higiene.errors[0] }}</div>
-                                    {% endif %}
-                                </div>
+                        <div class="form-group">
+                            {{ form.acesso_higiene.label(class="form-label") }}
+                            {{ form.acesso_higiene(class="form-check-input", id="acesso_higiene") }}
+                            
+                            <div id="higiene_div" style="display: none;">
+                                {{ form.tipos_higiene.label(class="form-label") }}
+                                {{ form.tipos_higiene(class="form-select") }}
                             </div>
                         </div>
 
@@ -831,408 +769,261 @@
     </div>
 </div>
 
+<style>
+.is-valid {
+    border-color: #198754 !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+/* Estilo para campos con error */
+.is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Animación de shake para campos con error */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.shake-error {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Estilo para el toast de error */
+.error-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 300px;
+    background-color: white;
+    border-left: 4px solid #dc3545;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1050;
+    padding: 1rem;
+    border-radius: 4px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+.toast-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.toast-body {
+    color: #666;
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Manejo de etnia para indígenas
-    const racaCorSelect = document.getElementById('raca_cor');
-    const etniaContainer = document.getElementById('etnia-container');
-    
-    racaCorSelect.addEventListener('change', function() {
-        etniaContainer.style.display = this.value === 'indigena' ? 'block' : 'none';
-    });
-
-    // Manejo de campos desconhecidos
-    const maeDesconhecida = document.getElementById('mae_desconhecida');
-    const nomeMae = document.getElementById('nome_mae');
-    const paiDesconhecido = document.getElementById('pai_desconhecido');
-    const nomePai = document.getElementById('nome_pai');
-
-    maeDesconhecida.addEventListener('change', function() {
-        nomeMae.disabled = this.checked;
-        if (this.checked) {
-            nomeMae.value = 'Desconhecido';
-        } else {
-            nomeMae.value = '';
-        }
-    });
-
-    paiDesconhecido.addEventListener('change', function() {
-        nomePai.disabled = this.checked;
-        if (this.checked) {
-            nomePai.value = 'Desconhecido';
-        } else {
-            nomePai.value = '';
-        }
-    });
-
-    // Formateo de fechas
-    function formatDate(input) {
-        let value = input.value.replace(/\D/g, '');
+    // Lista de TODOS los pares checkbox-campo
+    const conditionalPairs = [
+        // Campos que ya funcionan
+        {checkbox: 'recebe_beneficio', container: 'beneficio_div'},
+        {checkbox: 'possui_referencia_familiar', container: 'parentesco_div'},
+        {checkbox: 'visita_familiar', container: 'frequencia_div'},
+        {checkbox: 'acesso_higiene', container: 'higiene_div'},
+        {checkbox: 'membro_comunidade', container: 'qual_comunidade_div'},
+        {checkbox: 'informa_orientacao', container: 'orientacao_sexual_div'},
+        {checkbox: 'informa_identidade', container: 'identidade_genero_div'},
+        {checkbox: 'tem_deficiencia', container: 'deficiencias_div'},
         
-        if (value.length > 0) {
-            if (value.length > 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2);
-            }
-            if (value.length > 5) {
-                value = value.substring(0, 5) + '/' + value.substring(5);
-            }
-            if (value.length > 10) {
-                value = value.substring(0, 10);
-            }
-        }
-        
-        input.value = value;
-    }
+        // Campos de salud que necesitan ser agregados
+        {checkbox: 'tem_doenca_respiratoria', container: 'doenca-respiratoria-container'},
+        {checkbox: 'tem_doenca_cardiaca', container: 'doenca-cardiaca-container'},
+        {checkbox: 'tem_problema_rins', container: 'problema-rins-container'},
+        {checkbox: 'outras_condicoes_saude', container: 'outras-condicoes-container'},
+        {checkbox: 'esta_gestante', container: 'maternidade-container'},
+        {checkbox: 'situacao_rua', container: 'situacao-rua-container'},
+        {checkbox: 'acompanhado_instituicao', container: 'instituicao-container'}
+    ];
 
-    const dateFields = ['data_nascimento', 'data_naturalizacao', 'data_entrada_brasil'];
-    
-    dateFields.forEach(fieldId => {
-        const field = document.getElementById(fieldId);
-        if (field) {
-            field.addEventListener('input', function(e) {
-                formatDate(this);
+    // Configurar los campos condicionales
+    conditionalPairs.forEach(pair => {
+        const checkbox = document.getElementById(pair.checkbox);
+        const container = document.getElementById(pair.container);
+        
+        if (checkbox && container) {
+            // Mostrar/ocultar al cargar la página
+            container.style.display = checkbox.checked ? 'block' : 'none';
+            
+            // Event listener para cambios
+            checkbox.addEventListener('change', function() {
+                container.style.display = this.checked ? 'block' : 'none';
+            });
+        }
+    });
+
+    // Manejo de errores
+    function handleFormErrors() {
+        // Obtener todos los campos con error
+        const invalidFields = document.querySelectorAll('.is-invalid');
+        
+        if (invalidFields.length > 0) {
+            // Scroll al primer campo con error
+            invalidFields[0].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center'
             });
             
-            field.addEventListener('paste', function(e) {
-                e.preventDefault();
-                let text = (e.originalEvent || e).clipboardData.getData('text/plain');
-                text = text.replace(/\D/g, '');
-                setTimeout(() => {
-                    this.value = text;
-                    formatDate(this);
-                }, 0);
-            });
+            // Agregar efecto de shake al campo
+            invalidFields[0].classList.add('shake-error');
+            
+            // Mostrar mensaje de error en un toast
+            const errorMessage = invalidFields[0].nextElementSibling?.textContent || 'Por favor, corrija los campos marcados en rojo.';
+            showErrorToast(errorMessage);
         }
-    });
+    }
 
-    // Manejo de campos según nacionalidad
-    const nacionalidadeSelect = document.getElementById('nacionalidade');
-    const paisNascimentoGroup = document.getElementById('pais_nascimento').closest('.col-md-4');
-    const dataNaturalizacaoGroup = document.getElementById('data_naturalizacao').closest('.col-md-4');
-    const portariaNaturalizacaoGroup = document.getElementById('portaria_naturalizacao').closest('.col-md-4');
-    const municipioNascimentoGroup = document.getElementById('municipio_nascimento').closest('.col-md-4');
-    const ufNascimentoGroup = document.getElementById('uf_nascimento').closest('.col-md-4');
-    const dataEntradaBrasilGroup = document.getElementById('data_entrada_brasil').closest('.col-md-4');
-
-    function updateFieldsVisibility() {
-        const nacionalidade = nacionalidadeSelect.value;
-
-        // Campos para brasileiros
-        municipioNascimentoGroup.style.display = nacionalidade === 'brasileira' ? 'block' : 'none';
-        ufNascimentoGroup.style.display = nacionalidade === 'brasileira' ? 'block' : 'none';
-
-        // Campos para naturalizados y extranjeros
-        paisNascimentoGroup.style.display = nacionalidade === 'naturalizado' || nacionalidade === 'estrangeiro' ? 'block' : 'none';
+    // Función para mostrar toast de error
+    function showErrorToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'error-toast';
+        toast.innerHTML = `
+            <div class="toast-header">
+                <i class="fas fa-exclamation-circle text-danger"></i>
+                <strong class="ms-2">Error de Validación</strong>
+            </div>
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+        document.body.appendChild(toast);
         
-        // Campos específicos para naturalizados
-        dataNaturalizacaoGroup.style.display = nacionalidade === 'naturalizado' ? 'block' : 'none';
-        portariaNaturalizacaoGroup.style.display = nacionalidade === 'naturalizado' ? 'block' : 'none';
-
-        // Campos específicos para extranjeros
-        dataEntradaBrasilGroup.style.display = nacionalidade === 'estrangeiro' ? 'block' : 'none';
-
-        // Limpiar campos ocultos
-        if (nacionalidade === 'brasileira') {
-            document.getElementById('pais_nascimento').value = '';
-            document.getElementById('data_naturalizacao').value = '';
-            document.getElementById('portaria_naturalizacao').value = '';
-            document.getElementById('data_entrada_brasil').value = '';
-        } else if (nacionalidade === 'naturalizado') {
-            document.getElementById('data_entrada_brasil').value = '';
-        } else if (nacionalidade === 'estrangeiro') {
-            document.getElementById('data_naturalizacao').value = '';
-            document.getElementById('portaria_naturalizacao').value = '';
-        }
+        // Remover el toast después de 5 segundos
+        setTimeout(() => {
+            toast.remove();
+        }, 5000);
     }
 
-    nacionalidadeSelect.addEventListener('change', updateFieldsVisibility);
+    // Llamar a la función si hay errores al cargar la página
+    handleFormErrors();
+
+    // Máscara para teléfono celular (formato brasileño)
+    const telefoneInput = document.getElementById('telefone_celular');
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                // Formato: (XX) XXXXX-XXXX
+                if (value.length > 2) {
+                    value = '(' + value.substring(0,2) + ') ' + value.substring(2);
+                }
+                if (value.length > 10) {
+                    value = value.substring(0,10) + '-' + value.substring(10);
+                }
+                e.target.value = value;
+            } else {
+                e.target.value = value.substring(0,11);
+            }
+        });
+
+        // Validación del formato
+        telefoneInput.addEventListener('blur', function(e) {
+            const regex = /^\(\d{2}\) \d{5}-\d{4}$/;
+            if (e.target.value && !regex.test(e.target.value)) {
+                e.target.classList.add('is-invalid');
+                if (!e.target.nextElementSibling?.classList.contains('invalid-feedback')) {
+                    const feedback = document.createElement('div');
+                    feedback.className = 'invalid-feedback';
+                    feedback.textContent = 'Formato inválido. Use (XX) XXXXX-XXXX';
+                    e.target.parentNode.appendChild(feedback);
+                }
+            } else {
+                e.target.classList.remove('is-invalid');
+                const feedback = e.target.nextElementSibling;
+                if (feedback?.classList.contains('invalid-feedback')) {
+                    feedback.remove();
+                }
+            }
+        });
+    }
+
+    // Campos condicionales para nacionalidad
+    const nacionalidadeSelect = document.getElementById('nacionalidade');
+    const camposEstrangeiro = document.querySelectorAll('.campo-estrangeiro');
+    const camposNaturalizado = document.querySelectorAll('.campo-naturalizado');
     
-    // Ejecutar al cargar la página para establecer el estado inicial
-    updateFieldsVisibility();
-
-    // Agregar al script existente
-    function validateForm() {
-        let isValid = true;
-
-        // Validar peso
-        const consideracaoPeso = document.getElementById('consideracao_peso');
-        if (!consideracaoPeso.value) {
-            consideracaoPeso.classList.add('is-invalid');
-            isValid = false;
-        }
-
-        // Validar campos condicionales
-        if (document.getElementById('esta_gestante').checked) {
-            const maternidade = document.getElementById('maternidade_referencia');
-            if (!maternidade.value) {
-                maternidade.classList.add('is-invalid');
-            isValid = false;
+    if (nacionalidadeSelect) {
+        function toggleCamposNacionalidade() {
+            const nacionalidade = nacionalidadeSelect.value;
+            console.log('Nacionalidade selecionada:', nacionalidade); // Para debug
+            
+            // Ocultar todos los campos primero
+            camposEstrangeiro.forEach(campo => campo.style.display = 'none');
+            camposNaturalizado.forEach(campo => campo.style.display = 'none');
+            
+            // Mostrar campos según la nacionalidad
+            if (nacionalidade === 'estrangeira') {
+                camposEstrangeiro.forEach(campo => {
+                    campo.style.display = 'block';
+                    console.log('Mostrando campo estrangeiro:', campo); // Para debug
+                });
+            } else if (nacionalidade === 'naturalizada') {
+                camposNaturalizado.forEach(campo => {
+                    campo.style.display = 'block';
+                    console.log('Mostrando campo naturalizado:', campo); // Para debug
+                });
             }
         }
 
-        // ... otras validaciones similares para los demás campos condicionales ...
-
-        return isValid;
-    }
-
-    // Agregar al form el evento submit
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(e) {
-        if (!validateForm()) {
-            e.preventDefault();
-        }
-    });
-
-    // Limpiar validación cuando se marca como desconocido (padre)
-    paiDesconhecido.addEventListener('change', function() {
-        if (this.checked) {
-            nomePai.classList.remove('is-invalid');
-            const feedback = nomePai.nextElementSibling;
-            if (feedback && feedback.className === 'invalid-feedback') {
-                feedback.remove();
-            }
-        }
-    });
-
-    // Agregar al script existente
-    const responsavelFamiliar = document.getElementById('responsavel_familiar');
-    const dadosResponsavel = document.getElementById('dados_responsavel');
-
-    responsavelFamiliar.addEventListener('change', function() {
-        dadosResponsavel.style.display = this.checked ? 'none' : 'flex';
-        if (this.checked) {
-            document.getElementById('cns_responsavel').value = '';
-            document.getElementById('cpf_responsavel').value = '';
-        }
-    });
-
     // Ejecutar al cargar la página
-    dadosResponsavel.style.display = responsavelFamiliar.checked ? 'none' : 'flex';
-
-    // Calcular edad y mostrar/ocultar campos de criança
-    const dataNascimento = document.getElementById('data_nascimento');
-    const criancaContainer = document.getElementById('crianca-container');
-    
-    function calcularIdade(dataNasc) {
-        const hoje = new Date();
-        const nascimento = new Date(dataNasc.split('/').reverse().join('-'));
-        let idade = hoje.getFullYear() - nascimento.getFullYear();
-        const m = hoje.getMonth() - nascimento.getMonth();
-        if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
-            idade--;
-        }
-        return idade;
+        toggleCamposNacionalidade();
+        
+        // Ejecutar cuando cambie la selección
+        nacionalidadeSelect.addEventListener('change', toggleCamposNacionalidade);
     }
-
-    function verificarIdade() {
-        if (dataNascimento.value) {
-            const idade = calcularIdade(dataNascimento.value);
-            criancaContainer.style.display = idade <= 9 ? 'block' : 'none';
-        }
-    }
-
-    dataNascimento.addEventListener('change', verificarIdade);
-    verificarIdade();
-
-    // Comunidade Tradicional
-    const membroComunidade = document.getElementById('membro_comunidade');
-    const qualComunidadeContainer = document.getElementById('qual-comunidade-container');
-
-    membroComunidade.addEventListener('change', function() {
-        qualComunidadeContainer.style.display = this.checked ? 'block' : 'none';
-    });
-
-    // Orientação Sexual
-    const informaOrientacao = document.getElementById('informa_orientacao');
-    const orientacaoContainer = document.getElementById('orientacao-container');
-
-    informaOrientacao.addEventListener('change', function() {
-        orientacaoContainer.style.display = this.checked ? 'block' : 'none';
-    });
-
-    // Identidade de Gênero
-    const informaIdentidade = document.getElementById('informa_identidade');
-    const identidadeContainer = document.getElementById('identidade-container');
-
-    informaIdentidade.addEventListener('change', function() {
-        identidadeContainer.style.display = this.checked ? 'block' : 'none';
-    });
-
-    // Saída do Cadastro
-    const motivoSaida = document.getElementById('motivo_saida');
-    const dataObitoContainer = document.getElementById('data-obito-container');
-    const numeroDOContainer = document.getElementById('numero-do-container');
-
-    motivoSaida.addEventListener('change', function() {
-        const isObito = this.value === 'obito';
-        dataObitoContainer.style.display = isObito ? 'block' : 'none';
-        numeroDOContainer.style.display = isObito ? 'block' : 'none';
-    });
-
-    // Gestante
-    const estaGestante = document.getElementById('esta_gestante');
-    const maternidadeContainer = document.getElementById('maternidade-container');
-
-    estaGestante.addEventListener('change', function() {
-        maternidadeContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('maternidade_referencia').value = '';
-        }
-    });
-
-    // Doença Respiratória
-    const temDoencaRespiratoria = document.getElementById('tem_doenca_respiratoria');
-    const doencaRespiratoriaContainer = document.getElementById('doenca-respiratoria-container');
-
-    temDoencaRespiratoria.addEventListener('change', function() {
-        doencaRespiratoriaContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('tipo_doenca_respiratoria').value = '';
-        }
-    });
-
-    // Doença Cardíaca
-    const temDoencaCardiaca = document.getElementById('tem_doenca_cardiaca');
-    const doencaCardiacaContainer = document.getElementById('doenca-cardiaca-container');
-
-    temDoencaCardiaca.addEventListener('change', function() {
-        doencaCardiacaContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('tipo_doenca_cardiaca').value = '';
-        }
-    });
-
-    // Problemas Renais
-    const temProblemaRins = document.getElementById('tem_problema_rins');
-    const problemaRinsContainer = document.getElementById('problema-rins-container');
-
-    temProblemaRins.addEventListener('change', function() {
-        problemaRinsContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('tipo_problema_rins').value = '';
-        }
-    });
-
-    // Ejecutar al cargar la página para establecer estados iniciales
-    maternidadeContainer.style.display = estaGestante.checked ? 'block' : 'none';
-    doencaRespiratoriaContainer.style.display = temDoencaRespiratoria.checked ? 'block' : 'none';
-    doencaCardiacaContainer.style.display = temDoencaCardiaca.checked ? 'block' : 'none';
-    problemaRinsContainer.style.display = temProblemaRins.checked ? 'block' : 'none';
-
-    // Deficiência
-    const temDeficiencia = document.getElementById('tem_deficiencia');
-    const deficienciasContainer = document.getElementById('deficiencias-container');
-
-    temDeficiencia.addEventListener('change', function() {
-        deficienciasContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            const select = document.getElementById('deficiencias');
-            Array.from(select.options).forEach(option => option.selected = false);
-        }
-    });
-
-    // Situação de Rua
-    const situacaoRua = document.getElementById('situacao_rua');
-    const situacaoRuaContainer = document.getElementById('situacao-rua-container');
-
-    situacaoRua.addEventListener('change', function() {
-        situacaoRuaContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('tempo_rua').value = '';
-        }
-    });
-
-    // Acompanhamento Institucional
-    const acompanhadoInstituicao = document.getElementById('acompanhado_instituicao');
-    const instituicaoContainer = document.getElementById('instituicao-container');
-
-    acompanhadoInstituicao.addEventListener('change', function() {
-        instituicaoContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('qual_instituicao').value = '';
-        }
-    });
-
-    // Benefícios
-    const recebeBeneficio = document.getElementById('recebe_beneficio');
-    const beneficioContainer = document.getElementById('beneficio-container');
-
-    recebeBeneficio.addEventListener('change', function() {
-        beneficioContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('qual_beneficio').value = '';
-        }
-    });
-
-    // Referência Familiar
-    const possuiReferencia = document.getElementById('possui_referencia_familiar');
-    const referenciaContainer = document.getElementById('referencia-familiar-container');
-
-    possuiReferencia.addEventListener('change', function() {
-        referenciaContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('grau_parentesco').value = '';
-        }
-    });
-
-    // Visitas Familiares
-    const visitaFamiliar = document.getElementById('visita_familiar');
-    const visitaContainer = document.getElementById('visita-familiar-container');
-
-    visitaFamiliar.addEventListener('change', function() {
-        visitaContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            document.getElementById('frequencia_visitas').value = '';
-        }
-    });
-
-    // Higiene
-    const acessoHigiene = document.getElementById('acesso_higiene');
-    const higieneContainer = document.getElementById('higiene-container');
-
-    acessoHigiene.addEventListener('change', function() {
-        higieneContainer.style.display = this.checked ? 'block' : 'none';
-        if (!this.checked) {
-            const select = document.getElementById('tipos_higiene');
-            Array.from(select.options).forEach(option => option.selected = false);
-        }
-    });
-
-    // Ejecutar al cargar la página para establecer estados iniciales
-    situacaoRuaContainer.style.display = situacaoRua.checked ? 'block' : 'none';
-    instituicaoContainer.style.display = acompanhadoInstituicao.checked ? 'block' : 'none';
-    beneficioContainer.style.display = recebeBeneficio.checked ? 'block' : 'none';
-    referenciaContainer.style.display = possuiReferencia.checked ? 'block' : 'none';
-    visitaContainer.style.display = visitaFamiliar.checked ? 'block' : 'none';
-    higieneContainer.style.display = acessoHigiene.checked ? 'block' : 'none';
-
-    // Escola/Creche
-    const frequentaEscola = document.getElementById('frequenta_escola');
-    const cursoContainer = document.getElementById('curso-container');
-
-    frequentaEscola.addEventListener('change', function() {
-        if (!this.checked) {
-            document.getElementById('curso_frequenta').value = 'nenhum';
-        }
-    });
-
-    // Ejecutar al cargar la página
-    if (!frequentaEscola.checked) {
-        document.getElementById('curso_frequenta').value = 'nenhum';
-    }
-
-    // Al final del script existente
-    const foraArea = document.getElementById('fora_area');
-    const microarea = document.getElementById('microarea');
-    const microareaOriginal = '{{ current_user.microarea }}';  // Usar la microárea del ACS
-
-    foraArea.addEventListener('change', function() {
-        if (this.checked) {
-            microarea.value = 'FA';
-        } else {
-            microarea.value = microareaOriginal;
-        }
-    });
 });
 </script>
+
+<!-- Agregar después del formulario -->
+{% if historico %}
+<div class="card mt-4">
+    <div class="card-header">
+        <h4>Histórico de Modificações</h4>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Modificado por</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in historico %}
+                <tr>
+                    <td>{{ registro.data_modificacao.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ registro.modificado_por }}</td>
+                    <td>{{ registro.descricao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
 {% endblock %} 

@@ -54,12 +54,14 @@ class CadastroIndividualForm(FlaskForm):
                           validators=[Optional()])
     pai_desconhecido = BooleanField('Desconhecido')
     
-    nacionalidade = SelectField('Nacionalidade',
-                              choices=[('', 'Selecione...'),
-                                      ('brasileira', 'Brasileira'),
-                                      ('naturalizado', 'Naturalizado'),
-                                      ('estrangeiro', 'Estrangeiro')],
-                              validators=[DataRequired(message="Nacionalidade é obrigatória")])
+    nacionalidade = SelectField('Nacionalidade *',
+        choices=[
+            ('', 'Selecione...'),
+            ('brasileira', 'Brasileira'),
+            ('estrangeira', 'Estrangeira'),
+            ('naturalizada', 'Naturalizada')
+        ],
+        validators=[DataRequired(message='Por favor, selecione a nacionalidade')])
     
     pais_nascimento = StringField('País de Nascimento')
     data_naturalizacao = StringField('Data de Naturalização', 
@@ -76,10 +78,12 @@ class CadastroIndividualForm(FlaskForm):
                                                    message="Use o formato DD/MM/AAAA"),
                                              validate_date])
     
-    telefone_celular = StringField('Telefone Celular',
-                                 validators=[Optional(),
-                                           Regexp(r'^\d{11}$',
-                                                  message="Digite apenas os números, 11 dígitos")])
+    telefone_celular = StringField('Telefone Celular', 
+        validators=[
+            DataRequired(),
+            Regexp(r'^\(\d{2}\) \d{5}-\d{4}$', 
+                message='Formato inválido. Use (XX) XXXXX-XXXX')
+        ])
     
     email = EmailField('E-mail', 
                       validators=[Optional(),
@@ -223,8 +227,8 @@ class CadastroIndividualForm(FlaskForm):
         choices=[
             ('', 'Selecione...'),
             ('auditiva', 'Auditiva'),
-            ('intelectual', 'Intelectual/Cognitiva'),
             ('visual', 'Visual'),
+            ('intelectual', 'Intelectual/Cognitiva'),
             ('fisica', 'Física'),
             ('outra', 'Outra')
         ])
@@ -363,9 +367,9 @@ class CadastroIndividualForm(FlaskForm):
         choices=[
             ('', 'Selecione...'),
             ('banho', 'Banho'),
-            ('sanitario', 'Acesso ao Sanitário'),
-            ('bucal', 'Higiene Bucal'),
-            ('outras', 'Outras')
+            ('sanitario', 'Sanitário'),
+            ('higiene_bucal', 'Higiene Bucal'),
+            ('outro', 'Outro')
         ])
 
     # Alimentação
@@ -389,7 +393,7 @@ class CadastroIndividualForm(FlaskForm):
     
     # Actualizar el campo microarea para incluir FA
     microarea = StringField('Microárea *', 
-        validators=[DataRequired(message='Microárea é obrigatória')])
+        render_kw={'readonly': True})
 
     # Agregar el campo de checkbox
     fora_area = BooleanField('Fora de Área')
@@ -411,19 +415,19 @@ class CadastroIndividualForm(FlaskForm):
             raise ValidationError('UF de nascimento é obrigatório para brasileiros')
 
     def validate_pais_nascimento(self, field):
-        if self.nacionalidade.data in ['naturalizado', 'estrangeiro'] and not field.data:
+        if self.nacionalidade.data in ['naturalizada', 'estrangeira'] and not field.data:
             raise ValidationError('País de nascimento é obrigatório para naturalizados e estrangeiros')
 
     def validate_data_naturalizacao(self, field):
-        if self.nacionalidade.data == 'naturalizado' and not field.data:
+        if self.nacionalidade.data == 'naturalizada' and not field.data:
             raise ValidationError('Data de naturalização é obrigatória para naturalizados')
 
     def validate_portaria_naturalizacao(self, field):
-        if self.nacionalidade.data == 'naturalizado' and not field.data:
+        if self.nacionalidade.data == 'naturalizada' and not field.data:
             raise ValidationError('Portaria de naturalização é obrigatória para naturalizados')
 
     def validate_data_entrada_brasil(self, field):
-        if self.nacionalidade.data == 'estrangeiro' and not field.data:
+        if self.nacionalidade.data == 'estrangeira' and not field.data:
             raise ValidationError('Data de entrada no Brasil é obrigatória para estrangeiros')
 
     def validate_cns_cidadao(self, field):
