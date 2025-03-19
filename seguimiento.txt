@@ -239,3 +239,36 @@ Próximos pasos:
    - Reutilizar el formulario existente
    - Prellenar con datos del cadastro seleccionado
    - Validar y guardar cambios
+
+# 19/03/2024 - Implementación de Edición de Cadastros y Configuración de Base de Datos
+
+1. Funcionalidad de Edición:
+- Implementada la funcionalidad completa de edición de cadastros
+- Agregado histórico de modificaciones
+- Mejorada la interfaz del formulario de edición
+- Agregadas validaciones en el formulario
+- Implementado el guardado de cambios con registro de histórico
+
+2. Configuración Local:
+- Modificado config.py para usar SQLite localmente
+- Agregada configuración para MySQL en PythonAnywhere
+- Creado archivo .env para manejar variables de entorno
+
+3. Base de Datos:
+- Configurada base de datos MySQL en PythonAnywhere
+- Configurada base de datos SQLite para desarrollo local
+- Generados datos de prueba con scripts/gerar_cadastros.py
+
+4. Cambios en Archivos:
+- Actualizado app/routes/cadastro.py con la lógica de edición
+- Creado app/models/historico_cadastro.py para el registro de cambios
+- Actualizado app/templates/cadastro/form.html con mejoras en la interfaz
+- Modificado config.py para soportar múltiples entornos
+- Creado .env para variables de entorno
+- Actualizado requirements.txt con nuevas dependencias
+
+5. Próximos Pasos:
+- Implementar sistema de migraciones con Flask-Migrate
+- Mejorar el script de generación de datos
+- Agregar más validaciones en formularios
+- Implementar búsqueda y filtros en la lista de cadastros
